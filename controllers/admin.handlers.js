@@ -88,7 +88,7 @@ exports.getAdmin = async (req, res) => {
 
 exports.logoutAdmin = (req, res) => {
     try {
-        res.clearCookie('token'); // Adjust the cookie name if necessary
+        res.clearCookie('token'); 
         res.status(200).json({ message: 'Logout successful' });
     } catch (err) {
         console.error('Error during admin logout:', err);

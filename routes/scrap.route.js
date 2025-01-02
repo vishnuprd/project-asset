@@ -8,7 +8,7 @@ const {
   deleteScrap,
 } = require('../controllers/scrap.controllers.js');
 
-// Routes for Scrap Laptop
+
 router.post('/', createScrap);
 router.get('/', getScrap);
 router.get('/:id', getScrapById);

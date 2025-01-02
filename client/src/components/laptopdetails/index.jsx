@@ -253,6 +253,9 @@ export default function LaptopDetails() {
                 <p><strong>Laptop ID:</strong> {selectedLaptop.laptopId}</p>
                 <p><strong>Brand:</strong> {selectedLaptop.brand}</p>
                 <p><strong>Serial Number:</strong> {selectedLaptop.serialNumber}</p>
+                <p><strong>Status:</strong> {selectedLaptop.status || 'N/A'}</p>
+                <p><strong>Location:</strong> {selectedLaptop.location || 'N/A'}</p>
+                <p><strong>Division:</strong> {selectedLaptop.division || 'N/A'}</p>
                 <p><strong>Model:</strong> {selectedLaptop.modal || 'N/A'}</p>
                 <p><strong>Version:</strong> {selectedLaptop.version || 'N/A'}</p>
                 <p><strong>Processor:</strong> {selectedLaptop.processor || 'N/A'}</p>
@@ -265,7 +268,7 @@ export default function LaptopDetails() {
                 <p><strong>MS Office:</strong> {selectedLaptop.msOffice || 'N/A'}</p>
                 <p><strong>Description:</strong> {selectedLaptop.description || 'N/A'}</p>
               </div>
-              <div className="modal-action">
+              <div className="modal-action flex justify-center">
                 <button className="custom-btn" onClick={handleCloseModal}>Close</button>
               </div>
             </div>

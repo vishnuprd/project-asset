@@ -240,8 +240,20 @@ export default function DesktopDetails() {
                       <p><strong>Division:</strong> {selectedDesktop.division || 'N/A'}</p>
                       <p><strong>Status:</strong> {selectedDesktop.status || 'N/A'}</p>
                       <p><strong>Description:</strong> {selectedDesktop.description || 'N/A'}</p>
+                      <p><strong>Monitor:</strong> {selectedDesktop.monitor || 'N/A'}</p>
+                      <p><strong>CPU:</strong> {selectedDesktop.cpu || 'N/A'}</p> 
+                      <p><strong>RAM:</strong> {selectedDesktop.ram || 'N/A'}</p>
+                      <p><strong>Processor:</strong> {selectedDesktop.processor || 'N/A'}</p>
+                      <p><strong>Storage:</strong> {selectedDesktop.storage || 'N/A'}</p>
+                      <p><strong>SSD Storage:</strong> {selectedDesktop.ssdStorage || 'N/A'}</p>
+                      <p><strong>version:</strong> {selectedDesktop.version || 'N/A'}</p>
+                      <p><strong>Windows Software:</strong> {selectedDesktop.windowSoftware || 'N/A'}</p>
+                      <p><strong>Antivirus:</strong> {selectedDesktop.officeSoftware || 'N/A'}</p>
+                      <p><strong>MS Office:</strong> {selectedDesktop.officeSoftware || 'N/A'}</p>
+                      <p> <strong>Admin Account:</strong> {selectedDesktop.adminAccount || 'N/A'}</p>
+                      
                     </div>
-                    <div className="modal-action">
+                    <div className="modal-action flex justify-center">
                       <button className="custom-btn" onClick={handleCloseModal}>Close</button>
                     </div>
                   </div>

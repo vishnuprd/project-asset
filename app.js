@@ -7,7 +7,13 @@ const employeeRoutes = require('./routes/employee.route.js');
 const laptopRoutes = require('./routes/laptop.route.js');
 const desktopRoutes = require('./routes/desktop.route.js');
 const scrapRoutes = require('./routes/scrap.route.js');
-
+const DomainRoutes = require('./routes/domain.route.js');
+const DongleRoutes = require('./routes/dongle.route.js');
+const CCTVRoutes = require('./routes/cctv.route.js');
+const PrinterRoutes = require('./routes/printer.route.js');
+const ProjectorRoutes = require('./routes/projector.route.js');
+const TabletRoutes = require('./routes/tablet.route.js');
+const PhoneRoutes = require('./routes/phone.route.js');
 
 dotenv.config();
 
@@ -51,6 +57,14 @@ app.use('/api/employee', employeeRoutes);
 app.use('/api/asset', laptopRoutes);
 app.use('/api/asset', desktopRoutes);
 app.use('/api/scrap', scrapRoutes);
+app.use('/api/domain', DomainRoutes);
+app.use('/api/asset',DongleRoutes);
+app.use('/api/asset', CCTVRoutes);
+app.use('/api/asset', PrinterRoutes);
+app.use('/api/asset', ProjectorRoutes);
+app.use('/api/asset', TabletRoutes);
+app.use('/api/asset', PhoneRoutes);
+
 
 app.use((req, res, next) => {
   res.status(404).send('Route not found');

@@ -91,12 +91,12 @@ export default function AdminSignup() {
   
 
   return (
-    <div className="hero bg-base-200 min-h-screen">
+    <div className="hero  min-h-screen">
     <div className="hero-content flex-col lg:flex-row md:flex-row sm:flex-col items-center">
      
       <img
         src={Login}
-        className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg shadow-2xl"
+        className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg "
         alt="Login"
       />
   

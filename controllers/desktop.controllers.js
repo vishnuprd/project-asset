@@ -42,50 +42,20 @@ exports.getDesktopById = async (req, res) => {
   }
 };
 
-// Update a desktop
+
 
 
 exports.updateDesktop = async (req, res) => {
   try {
-    const desktopId = req.params.id;
-    const updates = req.body;
-    const user = req.user.name || "Admin"; 
-
-  
-    const desktop = await Desktop.findById(desktopId);
-    if (!desktop) {
-      return res.status(404).json({ error: 'Desktop not found' });
-    }
-
-   
-    const changeHistory = [];
-    for (const key in updates) {
-      if (desktop[key] && desktop[key] !== updates[key]) {
-        changeHistory.push({
-          field: key,
-          oldValue: desktop[key],
-          newValue: updates[key],
-          changedBy: req.user?.username || 'Unknown User', 
-        });
-      }
-    }
-
-    Object.assign(desktop, updates);
-    if (changeHistory.length > 0) {
-      desktop.changeHistory = [...desktop.changeHistory, ...changeHistory];
-    }
-
-   
-    await desktop.save();
-
-    res.status(200).json({ message: 'Desktop updated successfully', desktop });
+    const desktop = await Desktop.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('assignedTo');
+    if (!desktop) return res.status(404).json({ error: 'Desktop not found' });
+    res.json(desktop);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
 
-// Delete a desktop
 exports.deleteDesktop = async (req, res) => {
   try {
     const desktop = await Desktop.findByIdAndDelete(req.params.id);

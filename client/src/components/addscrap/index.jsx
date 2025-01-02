@@ -56,7 +56,7 @@ export default function AddScrap() {
       label: "Type",
       type: "select",
       name: "type",
-      options: ["Laptop", "Desktop"],
+      options: ["Laptop", "Desktop", "Tablet", "Printer", "CCTV", "Projector", "Dongle", "Phone","Others"],
       placeholder: "Select the type",
       required: true,
     },
@@ -154,7 +154,7 @@ export default function AddScrap() {
                 </div>
               ))}
             </div>
-            <button type="submit" className="btn btn-grey mt-4 justify-center">Submit</button>
+            <button type="submit" className="custom-btn mt-4 justify-center">Submit</button>
           </form>
         </div>
       </div>

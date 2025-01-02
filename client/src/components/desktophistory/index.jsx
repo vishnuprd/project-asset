@@ -1,17 +1,76 @@
-import React from "react";
-import Layout from "../layout/layout.js";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import Layout from '../layout/layout.js';
+import axios from 'axios';
 
 export default function DesktopHistory() {
-  const [desktopData, setDesktopData] = useState([]);
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState(5);
-  const [searchFilters, setSearchFilters] = useState({});
-  const [modalOpen, setModalOpen] = useState(false);
+  const [desktops, setDesktops] = useState([]);
   const [selectedDesktop, setSelectedDesktop] = useState(null);
+  const [formData, setFormData] = useState({
+    ram: '',
+    processor: '',
+    storage: '',
+    ssdStorage: '',
+    location: '',
+    version: '',
+    division: '',
+    status: '',
+    assignedTo: '',
+    description: '',
+  });
   const [oldFormData, setOldFormData] = useState({});
-  const [formData, setFormData] = useState({});
+  const [employeeData, setEmployeeData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const [searchFilters, setSearchFilters] = useState({
+    desktopId: '',
+    assignedTo: '',
+    serialNumber: '',
+    location: '',
+    division: '',
+    status: '',
+  });
+
+  const statusOptions = ["Assigned", "Lost", "Scrap", "Available"];
+  const divisionOptions = [
+    "Lamination", "Processing", "Garments", "Coating", "Bags", "EBO-Coimbatore",
+    "EBO-Chennai", "Abirami-Eco-Plast", "Non-Oven(Garments-2)", "Head-office",
+    "Spinning", "Fine-Garments(Garments-3)", "Fire-bird", "Vedhanayagam Hospital",
+    "Lenatural", "Govt.school project", "Others",
+  ];
+
+  const handlePreviousPage = () => {
+    if (page > 1) setPage((prevPage) => prevPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (page < totalPages) setPage((prevPage) => prevPage + 1);
+  };
+
+  const fetchDesktops = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/asset/desktop/all`);
+      if (response.status === 200) {
+        setDesktops(response.data);
+      } else {
+        alert(`Error fetching desktops: ${response.data.message}`);
+      }
+    } catch (error) {
+      alert(`Error fetching desktops: ${error.message}`);
+    }
+  };
+
+  const fetchEmployeeData = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/employee`);
+      if (response.status === 200) {
+        setEmployeeData(response.data);
+      } else {
+        console.error('Error fetching employees:', response.data.message || response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching employees:', error.response ? error.response.data : error.message);
+    }
+  };
 
   const handleOpenModal = (desktop) => {
     setSelectedDesktop(desktop);
@@ -42,109 +101,60 @@ export default function DesktopHistory() {
         : 'N/A',
       description: desktop.description || '',
     });
+
     document.getElementById('my_modal_4').showModal();
   };
 
   const handleCloseModal = () => {
+    document.getElementById('my_modal_4').close();
     setSelectedDesktop(null);
-    setModalOpen(false);
   };
 
-  const handlePreviousPage = () => {
-    if (page > 1) {
-      setPage(page - 1);
-    }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleNextPage = () => {
-    if (page < totalPages) {
-      setPage(page + 1);
-    }
-  };
-
-  const fetchData = async () => {
+  const handleUpdate = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/asset/desktop/all`
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/api/asset/desktop/${selectedDesktop._id}`,
+        formData
       );
       if (response.status === 200) {
-        setDesktopData(response.data);
+        alert('Desktop updated successfully');
+        fetchDesktops();
+        handleCloseModal();
       } else {
-        alert(`Error fetching desktops: ${response.data.message}`);
+        alert(`Error updating desktop: ${response.data.message}`);
       }
     } catch (error) {
-      alert("Error fetching desktops details");
+      console.error('Error during update:', error.response ? error.response.data : error.message);
+      alert(`Error updating desktop: ${error.message}`);
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, [])
+    fetchDesktops();
+    fetchEmployeeData();
+  }, []);
 
-  const filteredDesktops = desktopData.filter((desktop) => {
-    const {
-      desktopId = "",
-      assignedTo = "",
-      serialNumber = "",
-      location = "",
-      division = "",
-      status = "",
-    } = searchFilters;
+  const filteredDesktops = desktops.filter((desktop) => {
+    const { desktopId, assignedTo, serialNumber, location, division, status } = searchFilters;
 
-    const desktopIdMatch =
-      !desktopId ||
-      (desktop.desktopId &&
-        desktop.desktopId
-          .toLowerCase()
-          .includes(desktopId.toLowerCase().trim()));
-
+    const desktopIdMatch = !desktopId || desktop.desktopId.toLowerCase().includes(desktopId.toLowerCase().trim());
     const assignedToMatch =
-      !assignedTo ||
-      (
-        (desktop.assignedTo && desktop.assignedTo.employeeName) ||
-        "No employee assigned"
-      )
-        .toLowerCase()
-        .includes(assignedTo.toLowerCase().trim());
+      !assignedTo || (desktop.assignedTo?.employeeName || 'No employee assigned').toLowerCase().includes(assignedTo.toLowerCase().trim());
+    const serialNumberMatch = !serialNumber || desktop.serialNumber.toLowerCase().includes(serialNumber.toLowerCase().trim());
+    const locationMatch = !location || (desktop.location || 'N/A').toLowerCase().includes(location.toLowerCase().trim());
+    const divisionMatch = !division || (desktop.division || 'N/A').toLowerCase().includes(division.toLowerCase().trim());
+    const statusMatch = !status || desktop.status.toLowerCase().includes(status.toLowerCase().trim());
 
-    const serialNumberMatch =
-      !serialNumber ||
-      (desktop.serialNumber &&
-        desktop.serialNumber
-          .toLowerCase()
-          .includes(serialNumber.toLowerCase().trim()));
-
-    const locationMatch =
-      !location ||
-      (desktop.location || "N/A")
-        .toLowerCase()
-        .includes(location.toLowerCase().trim());
-
-    const divisionMatch =
-      !division ||
-      (desktop.division || "N/A")
-        .toLowerCase()
-        .includes(division.toLowerCase().trim());
-
-    const statusMatch =
-      !status ||
-      (desktop.status &&
-        desktop.status.toLowerCase().includes(status.toLowerCase().trim()));
-
-    return (
-      desktopIdMatch &&
-      assignedToMatch &&
-      serialNumberMatch &&
-      locationMatch &&
-      divisionMatch &&
-      statusMatch
-    );
+    return desktopIdMatch && assignedToMatch && serialNumberMatch && locationMatch && divisionMatch && statusMatch;
   });
 
-  const paginatedData = filteredDesktops.slice(
-    (page - 1) * pageSize,
-    page * pageSize
-  );
+  const paginatedData = filteredDesktops.slice((page - 1) * pageSize, page * pageSize);
   const totalPages = Math.ceil(filteredDesktops.length / pageSize);
 
   return (
@@ -154,136 +164,50 @@ export default function DesktopHistory() {
           <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
             <div className="p-4">
               <div className="flex justify-end gap-4 mb-4">
-                <select
-                  value={searchFilters.desktopId}
-                  onChange={(e) =>
-                    setSearchFilters({
-                      ...searchFilters,
-                      desktopId: e.target.value,
-                    })
-                  }
-                   className="input input-bordered input-info w-full max-w-xs"
-                >
-                  <option value="">Desktop ID</option>
-                  {desktopData
-                    .sort((a, b) => a.desktopId - b.desktopId)
-                    .map((desktop) => (
-                      <option key={desktop._id} value={desktop.desktopId}>
-                        {desktop.desktopId}
-                      </option>
-                    ))}
-                </select>
-
-                <select
-                  value={searchFilters.assignedTo}
-                  onChange={(e) =>
-                    setSearchFilters({
-                      ...searchFilters,
-                      assignedTo: e.target.value,
-                    })
-                  }
-                   className="input input-bordered input-info w-full max-w-xs"
-                >
-                  <option value="">Assigned To</option>
-                  {desktopData
-                    .filter((desktop) => desktop.assignedTo?.employeeName)
-                    .map((desktop) => (
-                      <option
-                        key={desktop._id}
-                        value={desktop.assignedTo?.employeeName}
-                      >
-                        {desktop.assignedTo?.employeeName}
-                      </option>
-                    ))}
-                </select>
-
-                <select
-                  value={searchFilters.serialNumber}
-                  onChange={(e) =>
-                    setSearchFilters({
-                      ...searchFilters,
-                      serialNumber: e.target.value,
-                    })
-                  }
-                   className="input input-bordered input-info w-full max-w-xs"
-                >
-                  <option value="">Serial Number</option>
-                  {desktopData.map((desktop) => (
-                    <option key={desktop._id} value={desktop.serialNumber}>
-                      {desktop.serialNumber}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  value={searchFilters.location}
-                  onChange={(e) =>
-                    setSearchFilters({
-                      ...searchFilters,
-                      location: e.target.value,
-                    })
-                  }
-                  className="input input-bordered input-info w-full max-w-xs"
-                >
-                  <option value="">Location</option>
-                  {Array.from(
-                    new Set(
-                      desktopData.map((desktop) => desktop.location || "N/A")
-                    )
-                  ).map((location, index) => (
-                    <option key={index} value={location}>
-                      {location}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  value={searchFilters.division}
-                  onChange={(e) =>
-                    setSearchFilters({
-                      ...searchFilters,
-                      division: e.target.value,
-                    })
-                  }
-                   className="input input-bordered input-info w-full max-w-xs"
-                >
-                  <option value="">Division</option>
-                  {Array.from(
-                    new Set(
-                      desktopData.map((desktop) => desktop.division || "N/A")
-                    )
-                  ).map((division, index) => (
-                    <option key={index} value={division}>
-                      {division}
-                    </option>
-                  ))}
-                </select>
-
-                <select
-                  value={searchFilters.status}
-                  onChange={(e) =>
-                    setSearchFilters({
-                      ...searchFilters,
-                      status: e.target.value,
-                    })
-                  }
-                  className="input input-bordered input-info w-full max-w-xs"
-                >
-                  <option value="">Status</option>
-                  {["Assigned", "Lost", "Scrap", "Available"].map((status) => (
-                    <option key={status} value={status}>
-                      {status}
-                    </option>
-                  ))}
-                </select>
+                {['desktopId', 'assignedTo', 'serialNumber', 'location', 'division', 'status'].map((filter) => (
+                  <select
+                    key={filter}
+                    value={searchFilters[filter]}
+                    onChange={(e) => setSearchFilters({ ...searchFilters, [filter]: e.target.value })}
+                    className="input input-bordered input-info w-full max-w-xs"
+                  >
+                    <option value="">{filter}</option>
+                    {filter === 'assignedTo' ? (
+                      desktops
+                        .filter((desktop) => desktop.assignedTo?.employeeName)
+                        .map((desktop) => (
+                          <option key={desktop._id} value={desktop.assignedTo?.employeeName}>
+                            {desktop.assignedTo?.employeeName}
+                          </option>
+                        ))
+                    ) : filter === 'status' ? (
+                      statusOptions.map((status) => (
+                        <option key={status} value={status}>
+                          {status}
+                        </option>
+                      ))
+                    ) : filter === 'division' ? (
+                      divisionOptions.map((division) => (
+                        <option key={division} value={division}>
+                          {division}
+                        </option>
+                      ))
+                    ) : (
+                      Array.from(new Set(desktops.map((desktop) => desktop[filter] || 'N/A'))).map((option, index) => (
+                        <option key={index} value={option}>
+                          {option}
+                        </option>
+                      ))
+                    )}
+                  </select>
+                ))}
               </div>
-              <h4 className="text-center font-bold" style={{ color: "#FF735C" }}>
-                Desktop History / update Desktop 📑
-              </h4>
+
+              <h3 className="text-center font-bold" style={{ color: "#FF735C" }}>Desktop History / Update Desktop 📑</h3>
               <div className="overflow-x-auto py-9">
                 <table className="table">
                   <thead>
-                    <tr className="hover">
+                    <tr>
                       <th className="font-bold" style={{ color: "#FF735C" }}>S.No</th>
                       <th className="font-bold" style={{ color: "#FF735C" }}>Desktop ID</th>
                       <th className="font-bold" style={{ color: "#FF735C" }}>Assigned To</th>
@@ -297,117 +221,117 @@ export default function DesktopHistory() {
                     {paginatedData.length > 0 ? (
                       paginatedData.map((desktop, index) => (
                         <tr className="hover" key={desktop._id}>
-                          <td>{index + 1}</td>
-                          <td>{desktop.desktopId || "N/A"}</td>
-                          <td>
-                            {desktop.assignedTo?.employeeName ||
-                              "No employee assigned"}
+                          <td>{(page - 1) * pageSize + index + 1}</td>
+                          <td>{desktop.desktopId}</td>
+                          <td>{desktop.assignedTo?.employeeName || 'No employee assigned'}</td>
+                          <td style={{ color: !desktop.location || desktop.location === 'N/A' ? 'red' : 'black' }}>
+                            {desktop.location || 'N/A'}
                           </td>
-                          <td
-                            style={{
-                              color:
-                                !desktop.location || desktop.location === "N/A"
-                                  ? "red"
-                                  : "black",
-                            }}
-                          >
-                            {desktop.location || "N/A"}
+                          <td style={{ color: !desktop.division || desktop.division === 'N/A' ? 'red' : 'black' }}>
+                            {desktop.division || 'N/A'}
                           </td>
-                          <td
-                            style={{
-                              color:
-                                !desktop.division || desktop.division === "N/A"
-                                  ? "red"
-                                  : "black",
-                            }}
-                          >
-                            {desktop.division || "N/A"}
-                          </td>
-                          <td
-                            style={{
-                              color:
-                                desktop.status === "Available"
-                                  ? "green"
-                                  : "black",
-                            }}
-                          >
+                          <td style={{ color: desktop.status === 'Available' ? 'green' : 'black' }}>
                             {desktop.status}
                           </td>
                           <td>
-                            <button className="btn btn-grey mr-2" onClick={() => handleOpenModal(desktop)}>Edit</button>
+                            <button className="btn btn-sm btn-grey" onClick={() => handleOpenModal(desktop)}>
+                              Edit
+                            </button>
                           </td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="7" className="text-center">
-                          No desktops found.
+                        <td colSpan="6" className="text-center">
+                          No desktops available.
                         </td>
                       </tr>
                     )}
                   </tbody>
                 </table>
               </div>
+
               <div className="flex justify-between mt-4">
-                <button
-                  onClick={handlePreviousPage}
-                  className="custom-btn"
-                  disabled={page === 1}
-                >
+                <button onClick={handlePreviousPage} className="custom-btn" disabled={page === 1}>
                   Previous
                 </button>
                 <span>
                   Page {page} of {totalPages}
                 </span>
-                <button
-                  onClick={handleNextPage}
-                  className="custom-btn"
-                  disabled={page === totalPages}
-                >
+                <button onClick={handleNextPage} className="custom-btn" disabled={page === totalPages}>
                   Next
                 </button>
               </div>
             </div>
+
             <dialog id="my_modal_4" className="modal">
               <div className="modal-box w-11/12 max-w-5xl">
-                <h4 className="text-center">Update Desktop Details</h4>
-                <form>
+                <h4 className="text-center font-bold" style={{ color: "#FF735C" }}>Update Desktop Details</h4>
+                <form onSubmit={handleUpdate}>
                   <div className="grid grid-cols-2 gap-4">
                     {Object.keys(formData).map((key) => (
                       <div key={key}>
-                        <label>
-                          {key.charAt(0).toUpperCase() + key.slice(1)}
-                        </label>
-                        <div className="flex justify-between">
-                          <input
-                            type="text"
-                            name={key}
-                            value={formData[key]}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                [key]: e.target.value,
-                              })
-                            }
-                            className="input input-bordered w-full"
-                          />
-                          <span className="text-sm text-gray-500">
-                            (Old: {oldFormData[key] || 'N/A'})
-                          </span>
-                        </div>
+                        <label>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+                        {key === 'assignedTo' ? (
+                          <div className="flex justify-between">
+                            <select
+                              name={key}
+                              value={formData[key]}
+                              onChange={handleInputChange}
+                              className="input input-bordered w-full"
+                            >
+                              <option value="">Select Employee</option>
+                              {employeeData.map((employee) => (
+                                <option key={employee._id} value={employee._id}>
+                                  {employee.employeeId} - {employee.employeeName}
+                                </option>
+                              ))}
+                            </select>
+                            <span className="text-sm text-gray-500">
+                              (Old: {oldFormData[key] || 'N/A'})
+                            </span>
+                          </div>
+                        ) : key === 'status' || key === 'division' ? (
+                          <div className="flex justify-between">
+                            <select
+                              name={key}
+                              value={formData[key]}
+                              onChange={handleInputChange}
+                              className="input input-bordered w-full"
+                            >
+                              <option value="">Select {key}</option>
+                              {(key === 'status' ? statusOptions : divisionOptions).map((option) => (
+                                <option key={option} value={option}>
+                                  {option}
+                                </option>
+                              ))}
+                            </select>
+                            <span className="text-sm text-gray-500">
+                              (Old: {oldFormData[key] || 'N/A'})
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="flex justify-between">
+                            <input
+                              type="text"
+                              name={key}
+                              value={formData[key]}
+                              onChange={handleInputChange}
+                              className="input input-bordered w-full"
+                            />
+                            <span className="text-sm text-gray-500">
+                              (Old: {oldFormData[key] || 'N/A'})
+                            </span>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
                   <div className="modal-action justify-center">
-                  
                     <button type="submit" className="custom-btn">
                       Update
                     </button>
-                    <button
-                      type="button"
-                      className="custom-btn"
-                      onClick={handleCloseModal}
-                    >
+                    <button type="button" className="btn" onClick={handleCloseModal}>
                       Close
                     </button>
                   </div>

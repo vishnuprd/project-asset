@@ -19,7 +19,7 @@ const employeeSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Laptop',
     ref: 'Desktop',
-  }] 
+  }],
 }, { timestamps: true });
 
 const Employee = mongoose.model('Employee', employeeSchema);

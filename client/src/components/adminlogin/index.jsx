@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Signup from "../../assets/signup.jpg";
-import { useAuth } from "../../components/layout/authcontext.js";
+// import { useAuth } from "../../components/layout/authcontext.js";
 
 export default function AdminLogin() {
   const [formData, setFormData] = useState({
@@ -11,7 +11,7 @@ export default function AdminLogin() {
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const { login } = useAuth(); 
+  // const { login } = useAuth(); 
 
   const Inputform = [
     {
@@ -54,7 +54,6 @@ export default function AdminLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
     const validationErrors = formValidation(formData);
     setErrors(validationErrors);
 
@@ -73,12 +72,12 @@ export default function AdminLogin() {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
 
-        login(token); 
+        // login(token); 
         alert("Login successful!");
 
-        navigate("/dashboard"); 
+        navigate("/dashboard");
       } else {
-        alert(`Login Error: ${response.data.message}`); 
+        alert(`Login Error: ${response.data.message}`);
       }
     } catch (error) {
       const errorMessage =
@@ -88,11 +87,11 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="hero bg-base-200 min-h-screen">
+    <div className="hero min-h-screen">
       <div className="hero-content flex-col lg:flex-row md:flex-row sm:flex-col items-center">
         <img
           src={Signup}
-          className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg shadow-2xl"
+          className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg "
           alt="Login"
         />
         <div className="w-full md:w-1/2 sm:w-full p-4">
@@ -123,6 +122,19 @@ export default function AdminLogin() {
               Login
             </button>
           </form>
+
+          {/* Signup Link */}
+          <div className="mt-4">
+            <span className="text-sm">
+              Don't have an account?{" "}
+              <a
+                href="/signup"
+                className="text-blue-500 hover:underline"
+              >
+                Signup here to get kicked started!
+              </a>
+            </span>
+          </div>
         </div>
       </div>
     </div>
