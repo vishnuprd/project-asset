@@ -60,7 +60,6 @@ function App() {
           <Routes>
             <Route path="/" element={<AdminLogin />} />
             <Route path="/signup" element={<AdminSignup />} />
-
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/add-employee" element={<AddEmployee />} />
