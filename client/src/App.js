@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './components/layout/authcontext.js';
-import {ProtectedRoute} from './components/layout/protected-route.js';
+import ProtectedRoute from './components/layout/protected-route.js';
 const AdminLogin = lazy(() => import('./components/adminlogin/index.jsx'));
 const AdminSignup = lazy(() => import('./components/adminsignup/index.jsx'));
 const Dashboard = lazy(() => import('./components/dashboard/index.jsx'));
