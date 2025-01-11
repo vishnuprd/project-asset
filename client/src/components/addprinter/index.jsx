@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../layout/layout.js';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddPrinter() {
     const [employeeData, setEmployeeData] = useState([]);
@@ -30,14 +31,14 @@ export default function AddPrinter() {
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/asset/printer/add`, printerData);
         if (response.status === 201) {
           console.log("Printer added successfully:", response.data);
-          alert("Printer added successfully!");
+          toast("Printer added successfully!");
         } else {
           console.error("Unexpected response status:", response.status);
-          alert("Error adding printer. Please try again.");
+          toast("Error adding printer. Please try again.");
         }
       } catch (error) {
         console.error("Error adding printer:", error.response ? error.response.data : error.message);
-        alert(`Error: ${error.response?.data?.message || error.message}`);
+        toast(`Error: ${error.response?.data?.message || error.message}`);
       }
     };
   
@@ -124,7 +125,7 @@ export default function AddPrinter() {
                 <h3 className="text-center py-2 font-bold" style={{ color: "#FF735C" }}>Add printer details 🧑‍💻</h3>
                 <form onSubmit={handleSubmit}>
                   <div className="form-control">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                       {Inputform.map((input) => (
                         <div key={input.id}>
                           <label className="label">

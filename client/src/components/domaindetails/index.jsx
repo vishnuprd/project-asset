@@ -131,7 +131,6 @@ export default function DomainDetails() {
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Server Type</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Purchase Date</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Expiry Date</th>
-                                        <th className="font-bold" style={{ color: "#FF735C" }}>Last Backup Date</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Days Between</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Actions</th>
                                     </tr>
@@ -159,7 +158,6 @@ export default function DomainDetails() {
                                                     <td>{domain.serverType}</td>
                                                     <td>{purchaseDate.toLocaleDateString()}</td>
                                                     <td>{expiryDate.toLocaleDateString()}</td>
-                                                    <td>{new Date(domain.lastBackupDate).toLocaleDateString()}</td>
                                                     <td className={daysStyle}>{daysDifference} days</td>
                                                     <td>
                                                         <button className="btn btn-sm btn-grey" onClick={() => handleOpenModal(domain)}>
@@ -198,6 +196,8 @@ export default function DomainDetails() {
                                         <p><strong>Provider:</strong> {modalRef.current?.provider || 'N/A'}</p>
                                         <p><strong>Server Name:</strong> {modalRef.current?.serverName || 'N/A'}</p>
                                         <p><strong>Server Type:</strong> {modalRef.current?.serverType || 'N/A'}</p>
+                                        <p><strong>Purchase Date:</strong> {new Date(modalRef.current?.purchaseDate).toLocaleDateString() || 'N/A'}</p>
+                                        <p><strong>Expiry Date:</strong> {new Date(modalRef.current?.expiryDate).toLocaleDateString() || 'N/A'}</p>
                                         <p><strong>Server Ip:</strong> {modalRef.current?.serverIp || 'N/A'}</p>
 
                                         <p><strong>Server URL:</strong> {modalRef.current?.serverUrl || 'N/A'}</p> 
@@ -210,15 +210,13 @@ export default function DomainDetails() {
                                         <p><strong>Registered organization:</strong> {modalRef.current?.registeredOrganization || 'N/A'}</p>
 
 
-                                        <p><strong>Register Email-Id(Support Email):</strong> {modalRef.current?.supportEmail || 'N/A'}</p>
+                                        <p><strong>Register Email-Id(Support Email):</strong> {modalRef.current?.registerEmail || 'N/A'}</p>
                                         <p><strong>Registered organization:</strong> {modalRef.current?.registeredOrganization || 'N/A'}</p>
 
-                                        <p><strong>One Time Cost:</strong> {new Date(modalRef.current?.oneTimeCost).toLocaleDateString() || 'N/A'}</p>
+                                        <p><strong>One Time Cost:</strong> {modalRef.current?.oneTimeCost|| 'N/A'}</p>
 
-                                        <p><strong>Purchase Date:</strong> {new Date(modalRef.current?.purchaseDate).toLocaleDateString() || 'N/A'}</p>
-                                        <p><strong>Expiry Date:</strong> {new Date(modalRef.current?.expiryDate).toLocaleDateString() || 'N/A'}</p>
-                                        <p><strong>Last Backup Date:</strong> {new Date(modalRef.current?.lastBackupDate).toLocaleDateString() || 'N/A'}</p>
-                                        <p><strong>Next Maintenance Date:</strong> {new Date(modalRef.current?.nextMaintenanceDate).toLocaleDateString() || 'N/A'}</p>
+                                       
+                            
                                     </div>
                                     <div className="modal-action flex justify-center">
                                         <button className="custom-btn" onClick={handleCloseModal}>Close</button>

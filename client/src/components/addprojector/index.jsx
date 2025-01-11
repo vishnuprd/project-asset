@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Layout from "../layout/layout.js";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddProjector() {
   const [assignedToOptions, setAssignedToOptions] = useState([]);
@@ -128,7 +129,7 @@ export default function AddProjector() {
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/asset/projector/add`, formData);
         if (response.status === 201) {
           console.log("Projector added successfully:", response.data);
-          alert("Projector added successfully!");
+          toast("Projector added successfully!");
           setFormData({});
         } else {
           console.error("Unexpected response status:", response.status);
@@ -136,7 +137,7 @@ export default function AddProjector() {
         }
       } catch (error) {
         console.error("Error adding projector:", error.response ? error.response.data : error.message);
-        alert(`Error: ${error.response?.data?.message || error.message}`);
+        toast(`Error: ${error.response?.data?.message || error.message}`);
       }
     };
   

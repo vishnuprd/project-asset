@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import Login from "../../assets/login.jpg";
+import Signup from "../../assets/signup.jpg";
 // import { useNavigate } from "react-router-dom";
 // import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 export default function AdminSignup() {
   const Inputform = [
     {
@@ -78,13 +79,13 @@ export default function AdminSignup() {
   
     //   if (response.status === 201) {
     //     localStorage.setItem("user", JSON.stringify(response.data));
-    //    alert.success("Signup successful!..😍");
+    //    toast.success("Signup successful!..😍");
     //     setTimeout(() => navigate("/"), 2000);
     //   } else {
-    //     alert.error(`Signup Error: ${response.data.message}..😒`);
+    //     toast.error(`Signup Error: ${response.data.message}..😒`);
     //   }
     // } catch (error) {
-    //   alert.error(`Signup Error: ${error.message}..😒`);
+    //   toast.error(`Signup Error: ${error.message}..😒`);
     //   setTimeout(() => navigate("/"), 2000);
     // }
   };
@@ -95,7 +96,7 @@ export default function AdminSignup() {
     <div className="hero-content flex-col lg:flex-row md:flex-row sm:flex-col items-center">
      
       <img
-        src={Login}
+        src={Signup}
         className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg "
         alt="Login"
       />

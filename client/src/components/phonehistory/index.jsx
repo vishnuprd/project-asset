@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Layout from '../layout/layout.js';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function PhoneHistory() {
   const [phoneData, setPhoneData] = useState([]);
@@ -71,15 +72,15 @@ export default function PhoneHistory() {
       );
 
       if (response.status === 200) {
-        alert('Phone updated successfully!');
+        toast.success('Phone updated successfully!');
         fetchPhoneData();
         handleCloseModal();
       } else {
-        alert('Error updating phone.');
+        toast.error('Error updating phone.');
       }
     } catch (error) {
       console.error('Error updating phone:', error);
-      alert('Error updating phone.');
+      toast.error('Error updating phone.');
     }
   };
 

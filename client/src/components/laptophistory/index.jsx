@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../layout/layout.js";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function LaptopHistory() {
   const [laptops, setLaptops] = useState([]);
@@ -100,15 +101,15 @@ export default function LaptopHistory() {
         formData
       );
       if (response.status === 200) {
-        alert("Laptop updated successfully");
+        toast.success("Laptop updated successfully");
         fetchLaptops();
         handleCloseModal();
       } else {
-        alert(`Error updating laptop: ${response.data.message}`);
+        toast.error(`Error updating laptop: ${response.data.message}`);
       }
     } catch (error) {
       console.error("Error during update:", error.response ? error.response.data : error.message);
-      alert(`Error updating laptop: ${error.message}`);
+      toast.error(`Error updating laptop: ${error.message}`);
     }
   };
 

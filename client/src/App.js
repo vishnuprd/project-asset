@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 // import { AuthProvider } from './components/layout/authcontext.js';
 // import ProtectedRoute from './components/layout/protected-route.js';
 
@@ -108,6 +109,7 @@ function App() {
               <Route path="/phone-details" element={<PhoneDetails/>}/>
               <Route path="/phone-history" element={<PhoneHistory/>}/>
               <Route path="/phone-report" element={<Phonereport/>}/>
+              <ToastContainer />
             {/* </Route> */}
 
             <Route path="*" element={<NotFound />} />

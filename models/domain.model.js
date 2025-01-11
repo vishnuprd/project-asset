@@ -18,17 +18,10 @@ const domainSchema = new Schema({
     serverType: {
         type: String,
         required: true,
-        enum: ['Shared Hosting', 'VPS', 'Cloud Hosting', 'Dedicated Server'], 
+        enum: ['Shared Hosting', 'VPS', 'Cloud Hosting', 'Dedicated Server','Others'], 
     },
     serverIp: {
         type: String,
-        required: true, 
-        validate: {
-            validator: function (v) {
-                return /^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$/.test(v);
-            },
-            message: 'Invalid IP address format',
-        },
     },
     serverUrl: {
         type: String,
@@ -70,20 +63,10 @@ const domainSchema = new Schema({
         enum: ['Credit Card', 'Bank Transfer', 'PayPal', 'Other'], 
     },
     oneTimeCost: {
-        type: Number, 
-        required: false,
-    },
-    lastBackupDate: {
-        type: Date,
-        required: false,
-    },
-    nextMaintenanceDate: {
-        type: Date,
-        required: false,
+        type: String, 
     },
     description: {
         type: String,
-        required: false,
         maxlength: 500, 
     },
 });

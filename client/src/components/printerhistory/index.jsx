@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import Layout from '../layout/layout.js';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function PrinterHistory() {
   const [printerData, setprinterData] = useState([]);
@@ -61,16 +62,16 @@ export default function PrinterHistory() {
 
       if (response.status === 200) {
         console.log("Printer updated successfully:", response.data);
-        alert("Printer updated successfully!");
+        toast.success("Printer updated successfully!");
         fetchprinterData();
         handleCloseModal();
       } else {
         console.error("Unexpected response status:", response.status);
-        alert("Error updating printer. Please try again.");
+        toast.error("Error updating printer. Please try again.");
       }
     } catch (error) {
       console.error("Error updating printer:", error.response ? error.response.data : error.message);
-      alert(`Error: ${error.response?.data?.message || error.message}`);
+      toast.error(`Error: ${error.response?.data?.message || error.message}`);
     }
   };
 

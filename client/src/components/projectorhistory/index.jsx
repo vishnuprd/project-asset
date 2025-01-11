@@ -1,6 +1,7 @@
 import { useState, useEffect,useRef} from "react";
 import Layout from "../layout/layout.js";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function ProjectorHistory() {
   const [projectorData, setProjectorData] = useState([]);
@@ -77,8 +78,8 @@ export default function ProjectorHistory() {
   };
 
   const handleModalOpen = (projector) => {
-    modelRef.current = projector; // Store the projector for reference
-    setProjectorData({ ...projector }); // Set the projector data in the state
+    modelRef.current = projector;
+    setProjectorData({ ...projector }); 
     setModalOpen(true);
   };
   
@@ -109,20 +110,20 @@ export default function ProjectorHistory() {
   
       if (response.status === 200) {
         console.log("Projector updated successfully:", response.data);
-        alert("Projector updated successfully!");
+        toast.success("Projector updated successfully!");
         fetchProjectorData();
         handleModalClose();
       } else {
         console.error("Unexpected response status:", response.status);
-        alert("Error updating projector. Please try again.");
+        toast.error("Error updating projector. Please try again.");
       }
     } catch (error) {
       console.error("Error updating projector:", error); 
       if (error.response) {
         console.error("Error response:", error.response);
-        alert(`Error: ${error.response.data.message || error.message}`);
+        toast.error(`Error: ${error.response.data.message || error.message}`);
       } else {
-        alert("Error: " + error.message);
+        toast.error("Error: " + error.message);
       }
     }
   };

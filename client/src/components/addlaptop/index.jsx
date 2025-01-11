@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../layout/layout.js';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Addlaptop() {
   const [employeeData, setEmployeeData] = useState([]);
@@ -90,12 +91,12 @@ export default function Addlaptop() {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/asset/laptop`, formData);
       if (response.status === 201) {
-        alert("Data Added Successfully");
+        toast.success("Data Added Successfully");
         setFormData({});
       }
     } catch (error) {
       console.error("Server error:", error.response?.data || error.message);
-      alert(error.response?.data?.message || "An error occurred. Please try again.");
+      toast.error(error.response?.data?.message || "An error occurred. Please try again.");
     }
   };
 

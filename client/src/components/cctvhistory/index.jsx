@@ -1,6 +1,7 @@
 import React, { useState, useEffect,  } from 'react';
 import Layout from '../layout/layout.js';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function CctvHistory() {
   const [cctvData, setCctvData] = useState([]);
@@ -58,16 +59,16 @@ export default function CctvHistory() {
     try {
       const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/asset/update/${currentCctv._id}`, currentCctv);
       if (response.status === 200) {
-        alert.success('CCTV details updated successfully!');
+        toast.success('CCTV details updated successfully!');
         fetchCctvDetails();
         handleCloseModal();
       } else {
         console.error(`Error updating CCTV details: ${response.data.message}`);
-        alert.error(`Error updating CCTV details: ${response.data.message}`);
+        toast.error(`Error updating CCTV details: ${response.data.message}`);
       }
     } catch (error) {
       console.error(`Error updating CCTV details: ${error.message}`);
-      alert.error(`Error updating CCTV details: ${error.message}`);
+      toast.error(`Error updating CCTV details: ${error.message}`);
     }
   };
 

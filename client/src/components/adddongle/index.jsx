@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Layout from "../layout/layout.js";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddDongle() {
   const [employeeData, setEmployeeData] = useState([]);
@@ -107,12 +108,14 @@ export default function AddDongle() {
             value: `${employee.employeeId} - ${employee.employeeName}`,
           }))
         );
+     
       } else {
         console.error("Error fetching employee:", response.data.message || response.data);
         setEmployeeData([]);
       }
     } catch (error) {
       console.error("Error fetching employee:", error.response ? error.response.data : error.message);
+    
       setEmployeeData([]);
     }
   };
@@ -136,12 +139,12 @@ export default function AddDongle() {
       );
 
       if (response.status === 201) {
-        alert("Data Added Successfully");
+        toast("Data Added Successfully");
         setDongleForm({});
       }
     } catch (error) {
       console.error("Server error:", error.response?.data || error.message);
-      alert(
+      toast(
         error.response?.data?.message || "An error occurred. Please try again."
       );
     }

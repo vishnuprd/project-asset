@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "../layout/layout.js";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function TabletHistory() {
   const [tabletData, setTabletData] = useState([]);
@@ -82,14 +83,14 @@ export default function TabletHistory() {
       );
 
       if (response.status === 200) {
-        alert("Tablet updated successfully!");
+        toast.success("Tablet updated successfully!");
         fetchTabletData();
         handleModalClose();
       } else {
-        alert("Error updating tablet. Please try again.");
+        toast.error(`Error updating tablet: ${response.data.message}`);
       }
     } catch (error) {
-      alert(`Error: ${error.response?.data?.message || error.message}`);
+      toast.error(`Error updating tablet: ${error.response?.data?.message || error.message}`);
     }
   };
 
@@ -226,7 +227,7 @@ export default function TabletHistory() {
                       />
                     </div>
 
-                    {/* Brand */}
+                   
                     <div className="form-control">
                       <label className="label">
                         <span className="label-text">Brand</span>
@@ -240,7 +241,7 @@ export default function TabletHistory() {
                       />
                     </div>
 
-                    {/* Serial Number */}
+                 
                     <div className="form-control">
                       <label className="label">
                         <span className="label-text">Serial Number</span>
@@ -254,7 +255,7 @@ export default function TabletHistory() {
                       />
                     </div>
 
-                    {/* Location */}
+                  
                     <div className="form-control">
                       <label className="label">
                         <span className="label-text">Location</span>
@@ -268,7 +269,7 @@ export default function TabletHistory() {
                       />
                     </div>
 
-                    {/* Status */}
+                  
                     <div className="form-control">
                       <label className="label">
                         <span className="label-text">Status</span>
@@ -287,7 +288,7 @@ export default function TabletHistory() {
                       </select>
                     </div>
 
-                    {/* Division */}
+                   
                     <div className="form-control">
                       <label className="label">
                         <span className="label-text">Division</span>
@@ -309,7 +310,7 @@ export default function TabletHistory() {
                       </select>
                     </div>
 
-                    {/* Description */}
+                    
                     <div className="form-control">
                       <label className="label">
                         <span className="label-text">Description</span>

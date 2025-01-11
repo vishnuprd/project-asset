@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../layout/layout.js";
 import axios from "axios";
-
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddScrap() {
   const [formState, setFormState] = useState({
@@ -30,7 +30,7 @@ export default function AddScrap() {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/scrap`, formState);
       console.log("Response:", response.data);
-      alert.success("Data successfully submitted.");
+      toast.success("Data successfully submitted.");
       setFormState({
         scrapID: "SCRAP-ID-9999",
         type: "",
@@ -46,7 +46,7 @@ export default function AddScrap() {
     } catch (error) {
       console.error("Error adding scrap:", error.response ? error.response.data : error);
       const errorMessage = error.response?.data?.message || "An error occurred while submitting the data. Please try again.";
-      alert.error(errorMessage);
+      toast.error(errorMessage);
     }
   };
 

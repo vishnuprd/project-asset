@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Layout from '../layout/layout.js';
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function DomainHistory() {
     const [domainData, setDomainData] = useState([]);
@@ -82,10 +83,10 @@ export default function DomainHistory() {
                 fetchDomainData();
                 handleCloseModal();
             } else {
-                alert(`Error updating domain: ${response.data.message}`);
+                toast.success(`Error updating domain: ${response.data.message}`);
             }
         } catch (error) {
-            alert("Error updating domain");
+            toast.error("Error updating domain");
             console.error(error);
         }
     };
@@ -149,7 +150,6 @@ export default function DomainHistory() {
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Server Type</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Purchase Date</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Expiry Date</th>
-                                        <th className="font-bold" style={{ color: "#FF735C" }}>Last Backup Date</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Days Between</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Actions</th>
                                     </tr>
@@ -177,7 +177,6 @@ export default function DomainHistory() {
                                                     <td>{domain.serverType}</td>
                                                     <td>{purchaseDate.toLocaleDateString()}</td>
                                                     <td>{expiryDate.toLocaleDateString()}</td>
-                                                    <td>{new Date(domain.lastBackupDate).toLocaleDateString()}</td>
                                                     <td className={daysStyle}>{daysDifference} days</td>
                                                     <td>
                                                         <button className="btn btn-sm btn-grey" onClick={() => handleOpenModal(domain)}>
@@ -392,32 +391,7 @@ export default function DomainHistory() {
                                         />
                                     </div>
 
-                                    <div>
-                                        <label className="label">
-                                            <span className="label-text">Last Backup Date</span>
-                                        </label>
-                                        <input
-                                            type="date"
-                                            name="lastBackupDate"
-                                            value={modalData.lastBackupDate}
-                                            onChange={handleInputChange}
-                                            className="input input-bordered w-full"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="label">
-                                            <span className="label-text">Next Maintenance Date</span>
-                                        </label>
-                                        <input
-                                            type="date"
-                                            name="nextMaintenanceDate"
-                                            value={modalData.nextMaintenanceDate}
-                                            onChange={handleInputChange}
-                                            className="input input-bordered w-full"
-                                        />
-                                    </div>
-                                  
+                                   
 
                                     <div className="col-span-2 flex justify-between gap-4">
                                         <button type="submit" className="btn w-1/2 custom-btn">

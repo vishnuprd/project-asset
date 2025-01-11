@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Layout from "../layout/layout.js";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function DongleHistory() {
   const [dongleData, setDongleData] = useState([]);
@@ -125,12 +126,12 @@ export default function DongleHistory() {
   e.preventDefault();
 
   if (!modalFormData.dongleId) {
-    alert("Dongle ID is required");
+    toast.success("Dongle ID is required");
     return;
   }
 
   if (!modalFormData.status) {
-    alert("Status is required");
+    toast.error("Status is required");
     return;
   }
 
@@ -141,16 +142,16 @@ export default function DongleHistory() {
     );
 
     if (response.status === 200) {
-      alert("Dongle details updated successfully!");
+      toast.success("Dongle details updated successfully!");
       fetchDongleData();  
       handleCloseModal(); 
     } else {
       console.error(`Error updating dongle details: ${response.data.message}`);
-      alert(`Error updating dongle details: ${response.data.message}`);
+      toast.error(`Error updating dongle details: ${response.data.message}`);
     }
   } catch (error) {
     console.error(`Error updating dongle details: ${error.message}`);
-    alert(`Error updating dongle details: ${error.message}`);
+    toast.error(`Error updating dongle details: ${error.message}`);
   }
 };
 

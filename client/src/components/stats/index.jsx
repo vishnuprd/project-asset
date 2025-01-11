@@ -191,7 +191,7 @@ export default function Stats() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
         
-          <Card title="Employees" count={employeeCount} iconClass="bi-person-circle" bgColor="blue" />
+<Card title="Employees" count={employeeCount} iconClass="bi-person-circle" bgColor="blue" />
 <Card title="Laptops" count={laptopCount} iconClass="bi-laptop" bgColor="green" />
 <Card title="Desktops" count={desktopCount} iconClass="bi-desktop" bgColor="yellow" />
 <Card title="Scrap Items" count={scrapCount} iconClass="bi-trash" bgColor="red" />

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Signup from "../../assets/signup.jpg";
+import Login from "../../assets/login.jpg";
 // import { useAuth } from "../../components/layout/authcontext.js";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AdminLogin() {
   const [formData, setFormData] = useState({
@@ -73,16 +74,16 @@ export default function AdminLogin() {
         localStorage.setItem("user", JSON.stringify(user));
 
         // login(token); 
-        alert("Login successful!");
+        toast.success("Login successful!");
 
         navigate("/dashboard");
       } else {
-        alert(`Login Error: ${response.data.message}`);
+        toast.error(`Login Error: ${response.data.message}`);
       }
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || error.message || "Something went wrong!";
-      alert(`Login Error: ${errorMessage}`);
+      toast.error(`Login Error: ${errorMessage}`);
     }
   };
 
@@ -90,7 +91,7 @@ export default function AdminLogin() {
     <div className="hero min-h-screen">
       <div className="hero-content flex-col lg:flex-row md:flex-row sm:flex-col items-center">
         <img
-          src={Signup}
+          src={Login}
           className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg "
           alt="Login"
         />
@@ -118,9 +119,14 @@ export default function AdminLogin() {
                 </div>
               ))}
             </div>
-            <button type="submit" className="custom-btn w-full sm:w-auto">
-              Login
-            </button>
+            <div className="flex justify-center">
+  <button
+    type="submit"
+    className="custom-btn w-full sm:w-auto"
+  >
+    Get Started
+  </button>
+</div>
           </form>
 
           {/* Signup Link */}

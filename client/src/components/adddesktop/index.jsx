@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../layout/layout.js';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddDesktop() {
   const [employeeData, setEmployeeData] = useState([]);
@@ -83,12 +84,12 @@ export default function AddDesktop() {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/asset/desktop`, formData);
       if (response.status === 201) {
-        alert("Desktop Data Added Successfully");
+        toast.success("Desktop Data Added Successfully");
         setFormData({});
       }
     } catch (error) {
       console.error("Server error:", error.response?.data || error.message);
-      alert(error.response?.data?.message || "An error occurred. Please try again.");
+      toast.error(error.response?.data?.message || "An error occurred. Please try again.");
     }
   };
 

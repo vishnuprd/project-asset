@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '../layout/layout.js';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddDomain() {
 
@@ -31,7 +32,8 @@ export default function AddDomain() {
             { id: "Shared Hosting", label: "Shared Hosting" },
             { id: "VPS", label: "VPS" },
             { id: "Cloud Hosting", label: "Cloud Hosting" },
-            { id: "Dedicated Server", label: "Dedicated Server" }
+            { id: "Dedicated Server", label: "Dedicated Server" },
+            { id: "Others", label: "Others" }
         ],
         required: true,
     },
@@ -79,7 +81,8 @@ export default function AddDomain() {
         select: [
             { id: "yes", label: "Yes" },
             { id: "no", label: "No" }
-        ]
+        ],
+        required: true,
     },
     {
         id: "10",
@@ -88,7 +91,8 @@ export default function AddDomain() {
         select: [
             { id: "yes", label: "Yes" },
             { id: "no", label: "No" }
-        ]
+        ],
+        required: true,
     },
     {
         id: "11",
@@ -128,21 +132,10 @@ export default function AddDomain() {
         name: "oneTimeCost",
         label: "One Time Cost",
         type: "string",
+        required: true,
     },
     {
         id: "16",
-        name: "lastBackupDate",
-        label: "Last Backup Date",
-        type: "date",
-    },
-    {
-        id: "17",
-        name: "nextMaintenanceDate",
-        label: "Next Maintenance Date",
-        type: "date",
-    },
-    {
-        id: "18",
         name: "description",
         label: "Description",
         type: "textarea",
@@ -168,16 +161,16 @@ export default function AddDomain() {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/domain/add`, formData);
       console.log("Response:", response.data);
-      if (alert && typeof alert.success === "function") {
-        alert.success("Domain added successfully!");
+      if (toast && typeof toast.success === "function") {
+        toast.success("Domain added successfully!");
 
       }
       
       setFormData({});
     } catch (error) {
       console.error("Error adding domain:", error.response ? error.response.data : error.message);
-      if (alert && typeof alert.error === "function") {
-        alert.error("Error adding domain. Please try again.");
+      if (toast && typeof toast.error === "function") {
+        toast.error("Error adding domain. Please try again.");
       }
     }
   };
@@ -197,7 +190,7 @@ export default function AddDomain() {
             </h3>
 
             <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {Inputform.map((input) => (
                   <div key={input.id} className="col-span-1">
                     <label className="block mb-2">{input.label}</label>

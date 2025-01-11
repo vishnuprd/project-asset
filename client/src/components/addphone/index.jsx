@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Layout from '../layout/layout.js';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddPhone() {
   const [formData, setFormData] = useState({});
@@ -92,12 +93,12 @@ export default function AddPhone() {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/asset/phone/add`, formData);
       if (response.status === 201) {
-        alert("Phone added successfully!");
+        toast.success("Phone added successfully!");
         setFormData({});
       }
     } catch (error) {
       console.error("Error adding phone:", error.response ? error.response.data : error.message);
-      alert("Failed to add phone. Please try again.");
+      toast.error("Failed to add phone. Please try again.");
     }
   };
 
@@ -115,7 +116,7 @@ export default function AddPhone() {
               </h3>
               <form onSubmit={handleSubmit}>
                 <div className="form-control">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {Inputform.map((input) => (
                       <div key={input.id}>
                         <label className="label" htmlFor={input.name}>

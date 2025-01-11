@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '../layout/layout.js';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Addcctv() {
     const Inputform = [
@@ -108,8 +109,8 @@ export default function Addcctv() {
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/asset/add`, formData);
             console.log("Response:", response.data);
-            if (alert && typeof alert.success === "function") {
-                alert.success("CCTV added successfully!");
+            if (toast && typeof toast.success === "function") {
+                toast.success("CCTV added successfully!");
             }
             setFormData({
                 cctvId: '',
@@ -123,8 +124,8 @@ export default function Addcctv() {
             });
         } catch (error) {
             console.error("Error adding CCTV:", error.response ? error.response.data : error.message);
-            if (alert && typeof alert.error === "function") {
-                alert.error("Error adding CCTV. Please try again.");
+            if (toast && typeof toast.error === "function") {
+                toast.error("Error adding CCTV. Please try again.");
             }
         }
     };
@@ -151,7 +152,7 @@ export default function Addcctv() {
                             <h3 className="text-center py-2 font-bold py-9" style={{ color: "#FF735C" }}>Add CCTV 📹</h3>
                             <form onSubmit={handleSubmit}>
                                 <div className="form-control">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                         {Inputform.map((input) => (
                                             <div key={input.id}>
                                                 {input.options ? (

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../layout/layout.js';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function DesktopHistory() {
   const [desktops, setDesktops] = useState([]);
@@ -123,15 +124,15 @@ export default function DesktopHistory() {
         formData
       );
       if (response.status === 200) {
-        alert('Desktop updated successfully');
+        toast.success('Desktop updated successfully');
         fetchDesktops();
         handleCloseModal();
       } else {
-        alert(`Error updating desktop: ${response.data.message}`);
+        toast.error(`Error updating desktop: ${response.data.message}`);
       }
     } catch (error) {
       console.error('Error during update:', error.response ? error.response.data : error.message);
-      alert(`Error updating desktop: ${error.message}`);
+      toast.error(`Error updating desktop: ${error.message}`);
     }
   };
 

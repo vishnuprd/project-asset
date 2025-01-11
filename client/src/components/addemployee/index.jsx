@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from "../layout/layout.js";
 import axios from 'axios';  
-
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddEmployee() {
     const Inputform = [
@@ -140,7 +140,7 @@ export default function AddEmployee() {
     
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/employee`, employeeData);
-            alert.success("Employee added successfully!");
+            toast.success("Employee added successfully!");
         
           
             setEmployeeData({
@@ -158,7 +158,7 @@ export default function AddEmployee() {
             });
         } catch (error) {
             const errorMessage = error.response?.data?.message || "Failed to add employee. Please check the form values.";
-            alert.error(errorMessage);
+            toast.error(errorMessage);
         }
     };
 

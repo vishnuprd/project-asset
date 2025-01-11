@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Layout from "../layout/layout.js";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function EmployeeDetails() {
     const [employeeData, setEmployeeData] = useState([]);
@@ -106,7 +107,7 @@ export default function EmployeeDetails() {
 
     const handleUpdate = async () => {
         if (!formData.position || !formData.gender) {
-            alert("Please fill in all required fields (Position, Gender).");
+            toast.error("Please fill in all required fields (Position, Gender).");
             return;
         }
 
@@ -117,14 +118,14 @@ export default function EmployeeDetails() {
             );
 
             if (response.status === 200) {
-                alert("Employee updated successfully!");
+                toast.success("Employee updated successfully!");
                 fetchData();
                 handleCloseModal();
             } else {
-                alert("Error updating employee.");
+                toast.error("Error updating employee.");
             }
         } catch (error) {
-            alert("Error updating employee.");
+                toast.error("Error updating employee.");
         }
     };
 

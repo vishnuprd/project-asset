@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Layout from "../layout/layout.js";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AddTablet() {
   const [assignedToOptions, setAssignedToOptions] = useState([]);
@@ -145,14 +146,14 @@ export default function AddTablet() {
       );
   
       if (response.status === 201) {
-        alert("Data Added Successfully");
+        toast.success("Data Added Successfully");
         setFormData({}); 
       } else {
-        alert("Data Not Added");
+        toast.error("Data Not Added");
       }
     } catch (error) {
       console.error("Server error:", error.response?.data || error.message);
-      alert(
+      toast.error(
         error.response?.data?.message || "An error occurred. Please try again."
       );
     }
@@ -174,7 +175,7 @@ export default function AddTablet() {
           </h3>
           <form  onSubmit={handleSubmit}>
             <div className="form-control">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {Inputform.map((input) => (
                   <div key={input.id}>
                     <label className="block text-gray-700">{input.label}</label>
