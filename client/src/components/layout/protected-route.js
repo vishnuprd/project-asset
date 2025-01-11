@@ -1,23 +1,23 @@
-// import React from "react";
-// import { Navigate, Outlet } from "react-router-dom";
-// import { useAuth } from "../layout/authcontext.js";
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../layout/authcontext.js";
 
-// const ProtectedRoute = () => {
-//   const { isAuthenticated } = useAuth();
+const ProtectedRoute = () => {
+  const { isAuthenticated } = useAuth();
 
 
 
-//   if (isAuthenticated === null) {
-//     return <div>Loading...</div>; 
-//   }
+  if (isAuthenticated === null) {
+    return <div>Loading...</div>; 
+  }
 
  
-//   if (!isAuthenticated) {
-//     return <Navigate to="/" replace />;
-//   }
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
 
   
-//   return <Outlet />;
-// };
+  return <Outlet />;
+};
 
-// export default ProtectedRoute;
+export default ProtectedRoute;
