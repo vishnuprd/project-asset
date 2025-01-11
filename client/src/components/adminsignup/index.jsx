@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Signup from "../../assets/signup.jpg";
-// import { useNavigate } from "react-router-dom";
-// import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 export default function AdminSignup() {
   const Inputform = [
@@ -51,7 +51,7 @@ export default function AdminSignup() {
     password: "",
   });
 
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -71,23 +71,23 @@ export default function AdminSignup() {
       return;
     }
   
-    // try {
-    //   const response = await axios.post(
-    //     `${process.env.REACT_APP_API_URL}/api/admin/signup`,
-    //     formData
-    //   );
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/admin/signup`,
+        formData
+      );
   
-    //   if (response.status === 201) {
-    //     localStorage.setItem("user", JSON.stringify(response.data));
-    //    toast.success("Signup successful!..😍");
-    //     setTimeout(() => navigate("/"), 2000);
-    //   } else {
-    //     toast.error(`Signup Error: ${response.data.message}..😒`);
-    //   }
-    // } catch (error) {
-    //   toast.error(`Signup Error: ${error.message}..😒`);
-    //   setTimeout(() => navigate("/"), 2000);
-    // }
+      if (response.status === 201) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+       toast.success("Signup successful!..😍");
+        setTimeout(() => navigate("/"), 2000);
+      } else {
+        toast.error(`Signup Error: ${response.data.message}..😒`);
+      }
+    } catch (error) {
+      toast.error(`Signup Error: ${error.message}..😒`);
+      setTimeout(() => navigate("/"), 2000);
+    }
   };
   
 

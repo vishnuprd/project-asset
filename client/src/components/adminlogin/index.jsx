@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Login from "../../assets/login.jpg";
-// import { useAuth } from "../../components/layout/authcontext.js";
+import { useAuth } from "../../components/layout/authcontext.js";
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function AdminLogin() {
@@ -12,7 +12,7 @@ export default function AdminLogin() {
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  // const { login } = useAuth(); 
+  const { login } = useAuth(); 
 
   const Inputform = [
     {
@@ -73,7 +73,7 @@ export default function AdminLogin() {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
 
-        // login(token); 
+        login(token); 
         toast.success("Login successful!");
 
         navigate("/dashboard");
