@@ -2,8 +2,8 @@ import React, { Suspense, lazy } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-// import { AuthProvider } from './components/layout/authcontext.js';
-// import ProtectedRoute from './components/layout/protected-route.js';
+import { AuthProvider } from './components/layout/authcontext.js';
+import ProtectedRoute from './components/layout/protected-route.js';
 
 
 const AdminLogin = lazy(() => import('./components/adminlogin/index.jsx'));
@@ -57,7 +57,7 @@ function App() {
   return (
    
     <Router>
-      {/* <AuthProvider> */}
+      <AuthProvider>
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
            
@@ -65,7 +65,7 @@ function App() {
             <Route path="/signup" element={<AdminSignup />} />
 
       
-            {/* <Route element={<ProtectedRoute />}> */}
+            <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/add-employee" element={<AddEmployee />} />
               <Route path="/employee-details" element={<EmployeeDetails />} />
@@ -109,13 +109,13 @@ function App() {
               <Route path="/phone-details" element={<PhoneDetails/>}/>
               <Route path="/phone-history" element={<PhoneHistory/>}/>
               <Route path="/phone-report" element={<Phonereport/>}/>
-              <ToastContainer />
-            {/* </Route> */}
+              <ToastContainer position="bottom-right" autoClose={3000} />
+            </Route>
 
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
-      {/* </AuthProvider> */}
+      </AuthProvider>
     </Router>
   );
 }
