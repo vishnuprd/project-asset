@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Navbar() {
   const [isLogoutVisible, setIsLogoutVisible] = useState(false);
@@ -18,11 +19,11 @@ export default function Navbar() {
       if (response.status === 200) {
         localStorage.removeItem('token');
         navigate('/');
-        alert(response.data.message); 
+        toast.sucess(response.data.message); 
       }
     } catch (error) {
       console.error('Error during logout:', error);
-      alert('An error occurred while logging out');
+      toast.error('An error occurred while logging out');
     }
   };
 
