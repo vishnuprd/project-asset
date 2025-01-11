@@ -198,7 +198,6 @@ export default function EmployeeDetails() {
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Position</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Location</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Status</th>
-                                        <th className="font-bold" style={{ color: "#FF735C" }}>Date of Joining</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Actions</th>
                                     </tr>
                                 </thead>
@@ -356,7 +355,7 @@ export default function EmployeeDetails() {
         <option value="Inactive">Inactive</option>
     </select>
 </div>
-
+{/* 
                     <div>
                         <label className="block mb-2 text-sm font-medium text-gray-900">Date of Joining</label>
                         <input
@@ -366,7 +365,7 @@ export default function EmployeeDetails() {
                             onChange={handleInputChange}
                             className="w-full p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
                         />
-                    </div>
+                    </div> */}
                     <div>
                         <label className="block mb-2 text-sm font-medium text-gray-900">Admin Account</label>
                         <input
