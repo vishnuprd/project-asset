@@ -13,19 +13,30 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/admin/logout`);
-      
+  
       if (response.status === 200) {
+     
         localStorage.removeItem('token');
+  
+       
         navigate('/');
-        toast.success(response.data.message); 
+  
+     
+        const message = response.data?.message || 'Logout successful!';
+        toast.success(message);
+      } else {
+        toast.error('Unexpected response from the server.');
       }
     } catch (error) {
       console.error('Error during logout:', error);
-      toast.error('An error occurred while logging out');
+  
+   
+      const errorMessage = error.response?.data?.message || 'An error occurred while logging out';
+      toast.error(errorMessage);
     }
   };
+  
 
   return (
     <div>
