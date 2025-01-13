@@ -1,6 +1,6 @@
 const Dongle = require('../models/dongle.model.js');
 
-// Create a new Dongle
+
 exports.createDongle = async (req, res) => {
     try {
         const newDongle = new Dongle(req.body);
@@ -13,7 +13,7 @@ exports.createDongle = async (req, res) => {
     }
 };
 
-// Get all Dongles
+
 exports.getDongles = async (req, res) => {
     try {
         const dongles = await Dongle.find();
@@ -24,7 +24,7 @@ exports.getDongles = async (req, res) => {
     }
 };
 
-// Get a Dongle by its ID
+
 exports.getDongleById = async (req, res) => {
     try {
         const dongle = await Dongle.findById(req.params.id);
@@ -58,7 +58,7 @@ exports.updateDongle = async (req, res) => {
   };
   
 
-// Delete a Dongle
+
 exports.deleteDongle = async (req, res) => {
     try {
         const deletedDongle = await Dongle.findByIdAndDelete(req.params.id);
@@ -70,7 +70,7 @@ exports.deleteDongle = async (req, res) => {
     }
 };
 
-// Get all available Dongles
+
 exports.getAvailableDongles = async (req, res) => {
     try {
         const availableDongles = await Dongle.find({ status: 'Available' });
@@ -81,7 +81,7 @@ exports.getAvailableDongles = async (req, res) => {
     }
 };
 
-// Get all assigned Dongles
+
 exports.getAssignedDongles = async (req, res) => {
     try {
         const assignedDongles = await Dongle.find({ handledBy: { $exists: true, $ne: null } });
@@ -92,7 +92,6 @@ exports.getAssignedDongles = async (req, res) => {
     }
 };
 
-// Get Dongles by handled employee
 exports.getDonglesByHandledBy = async (req, res) => {
     try {
         const handledDongles = await Dongle.find({ handledBy: req.params.handledBy });

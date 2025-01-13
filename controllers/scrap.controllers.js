@@ -1,6 +1,6 @@
 const ScrapLaptop = require('../models/scrap.model.js');
 
-// Create a new scrap laptop
+
 exports.createScrap = async (req, res) => {
     const {scrapID,type,assetID,brand,serialNumber,location,description,dateScrapped,status,adminAccount} = req.body;
     console.log(req.body);
@@ -13,7 +13,7 @@ exports.createScrap = async (req, res) => {
     }
 };
 
-// Get all scrap laptops
+
 exports.getScrap = async (req, res) => {
     try {
         const scrapLaptops = await ScrapLaptop.find();
@@ -23,7 +23,7 @@ exports.getScrap = async (req, res) => {
     }
 };
 
-// Get a scrap laptop by ID
+
 exports.getScrapById = async (req, res) => {
     try {
         const scrapLaptop = await ScrapLaptop.findById(req.params.id);
@@ -34,7 +34,7 @@ exports.getScrapById = async (req, res) => {
     }
 };
 
-// Update a scrap laptop
+
 exports.updateScrap = async (req, res) => {
     try {
         const scrapLaptop = await ScrapLaptop.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -45,7 +45,7 @@ exports.updateScrap = async (req, res) => {
     }
 };
 
-// Delete a scrap laptop
+
 exports.deleteScrap = async (req, res) => {
     try {
         const scrapLaptop = await ScrapLaptop.findByIdAndDelete(req.params.id);

@@ -11,7 +11,7 @@ exports.createDesktop = async (req, res) => {
 
     const newDesktop = new Desktop({
       ...req.body,
-      assignedTo: employee._id // Use ObjectId
+      assignedTo: employee._id 
     });
 
     await newDesktop.save();

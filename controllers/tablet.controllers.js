@@ -13,7 +13,7 @@ exports.createTablet = async (req, res) => {
             handledBy,
             location,
             division,
-            status: status || 'Available', // Default status to 'Available'
+            status: status || 'Available', 
             description,
         });
 
@@ -25,7 +25,7 @@ exports.createTablet = async (req, res) => {
     }
 };
 
-// Get all Tablets
+
 exports.getTablets = async (req, res) => {
     try {
         const tablets = await Tablet.find();
@@ -36,7 +36,7 @@ exports.getTablets = async (req, res) => {
     }
 };
 
-// Get a Tablet by its ID
+
 exports.getTabletById = async (req, res) => {
     try {
         const tablet = await Tablet.findById(req.params.id);
@@ -48,7 +48,7 @@ exports.getTabletById = async (req, res) => {
     }
 };
 
-// Update a Tablet
+
 exports.updateTablet = async (req, res) => {
     try {
         const updatedTablet = await Tablet.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -60,7 +60,7 @@ exports.updateTablet = async (req, res) => {
     }
 };
 
-// Delete a Tablet
+
 exports.deleteTablet = async (req, res) => {
     try {
         const deletedTablet = await Tablet.findByIdAndDelete(req.params.id);
