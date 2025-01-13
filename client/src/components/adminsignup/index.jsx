@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Signup from "../../assets/signup.jpg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
+
 export default function AdminSignup() {
   const Inputform = [
     {
@@ -50,7 +51,7 @@ export default function AdminSignup() {
     email: "",
     password: "",
   });
-
+  const [showPassword, setShowPassword] = useState(false); 
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
 
@@ -61,25 +62,23 @@ export default function AdminSignup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-   
+
     const validationErrors = formValidation(formData);
     setErrors(validationErrors);
-  
-  
+
     if (Object.keys(validationErrors).length > 0) {
       return;
     }
-  
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/admin/signup`,
         formData
       );
-  
+
       if (response.status === 201) {
         localStorage.setItem("user", JSON.stringify(response.data));
-       toast.success("Signup successful!..😍");
+        toast.success("Signup successful!..😍");
         setTimeout(() => navigate("/"), 2000);
       } else {
         toast.error(`Signup Error: ${response.data.message}..😒`);
@@ -89,58 +88,59 @@ export default function AdminSignup() {
       setTimeout(() => navigate("/"), 2000);
     }
   };
-  
 
   return (
-    <div className="hero  min-h-screen">
-    <div className="hero-content flex-col lg:flex-row md:flex-row sm:flex-col items-center">
-     
-      <img
-        src={Signup}
-        className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg "
-        alt="Login"
-      />
-  
-    
-      <div className="w-full md:w-1/2 sm:w-full p-4">
-        <h1 className="">
-          Admin Signup..!
-        </h1>
-        <form onSubmit={handleSubmit}>
-          <div className="form-control">
-            {Inputform.map((input) => (
-              <div key={input.id} className="mb-4">
-                <label htmlFor={input.name} className="label">
-                  <span className="label-text">{input.label}</span>
-                </label>
-                <input
-                  id={input.name}
-                  name={input.name}
-                  type={input.type}
-                  placeholder={input.placeholder}
-                  value={formData[input.name]}
-                  onChange={handleChange}
-                  className="input input-bordered w-full"
-                />
-                {errors[input.name] && (
-                  <span className="text-red-500 text-sm">{errors[input.name]}</span>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-center">
-  <button
-    type="submit"
-    className="custom-btn w-full sm:w-auto"
-  >
-    Get Started
-  </button>
-</div>
-
-        </form>
+    <div className="hero min-h-screen">
+      <div className="hero-content flex-col lg:flex-row md:flex-row sm:flex-col items-center">
+        <img
+          src={Signup}
+          className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg"
+          alt="Signup"
+        />
+        <div className="w-full md:w-1/2 sm:w-full p-4">
+          <h1 className="">Admin Signup..!</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="form-control">
+              {Inputform.map((input) => (
+                <div key={input.id} className="mb-4">
+                  <label htmlFor={input.name} className="label">
+                    <span className="label-text">{input.label}</span>
+                  </label>
+                  <input
+                    id={input.name}
+                    name={input.name}
+                    type={input.name === "password" && showPassword ? "text" : input.type}
+                    placeholder={input.placeholder}
+                    value={formData[input.name]}
+                    onChange={handleChange}
+                    className="input input-bordered w-full"
+                  />
+                  {errors[input.name] && (
+                    <span className="text-red-500 text-sm">{errors[input.name]}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center justify-start mb-4">
+              <input
+                type="checkbox"
+                id="showPassword"
+                checked={showPassword}
+                onChange={() => setShowPassword(!showPassword)}
+                className="mr-2"
+              />
+              <label htmlFor="showPassword" className="label-text">
+                Show Password
+              </label>
+            </div>
+            <div className="flex justify-center">
+              <button type="submit" className="custom-btn w-full sm:w-auto">
+                Get Started
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  
   );
 }
