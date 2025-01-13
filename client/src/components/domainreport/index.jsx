@@ -79,7 +79,7 @@ export default function DomainReport() {
             "Server Type": domain.serverType || "N/A",
             "Server IP": domain.serverIp || "N/A",
             "Server Url": domain.serverUrl || "N/A",
-            TLD: domain.tld || "N/A",
+            "TLD": domain.tld || "N/A",
             "Registered Name": domain.ownerName || "N/A",
             "Registered Organization": domain.registeredOrganization || "N/A",
             "Cloud Flare": domain.cloudFlare || "N/A",
@@ -151,10 +151,9 @@ export default function DomainReport() {
           <div key={domain._id} className="p-4 border rounded shadow-sm">
             <h3 className="font-semibold text-[#FF735C]">{domain.provider || "N/A"}</h3>
             <p>Server Name: {domain.serverName || "N/A"}</p>
+            <p>Server URL: {domain.tld || "N/A"}</p>
             <p>Server Type: {domain.serverType || "N/A"}</p>
             <p>Server IP: {domain.serverIp || "N/A"}</p>
-            <p>Purchase Date: {domain.purchaseDate || "N/A"}</p>
-            <p>Expiry Date: {domain.expiryDate || "N/A"}</p>
 
             
             <button
