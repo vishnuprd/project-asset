@@ -19,7 +19,7 @@ export default function Navbar() {
       if (response.status === 200) {
         localStorage.removeItem('token');
         navigate('/');
-        toast.sucess(response.data.message); 
+        toast.success(response.data.message); 
       }
     } catch (error) {
       console.error('Error during logout:', error);
