@@ -221,7 +221,7 @@ export default function EmployeeDetails() {
                                                     {employee.status}
                                                 </td>
 
-                                                <td>{new Date(employee.dateOfJoining).toLocaleDateString()}</td>
+                                             
 
                                                 <td>
                                                     <button
@@ -387,14 +387,14 @@ export default function EmployeeDetails() {
                     </div>
                 </div>
 
-                <div className="flex justify-end space-x-4 mt-4">
+                <div className="flex justify-center space-x-4 mt-4">
                     <button type="submit" className="custom-btn">
                         Save
                     </button>
                     <button
                         type="button"
                         onClick={handleCloseModal}
-                        className="custom-btn"
+                        className="btn btn-grey"
                     >
                         Close
                     </button>
