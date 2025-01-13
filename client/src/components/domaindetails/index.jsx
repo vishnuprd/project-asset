@@ -128,8 +128,8 @@ export default function DomainDetails() {
                                         <th className="font-bold" style={{ color: "#FF735C" }}>#</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Provider</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Server Name</th>
+                                        <th className="font-bold" style={{ color: "#FF735C" }}>TLD</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Server Type</th>
-                                        <th className="font-bold" style={{ color: "#FF735C" }}>Purchase Date</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Expiry Date</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Days Between</th>
                                         <th className="font-bold" style={{ color: "#FF735C" }}>Actions</th>
@@ -155,8 +155,8 @@ export default function DomainDetails() {
                                                     <td>{index + 1 + (page - 1) * pageSize}</td>
                                                     <td>{domain.provider}</td>
                                                     <td>{domain.serverName}</td>
+                                                    <td>{domain.tld}</td>
                                                     <td>{domain.serverType}</td>
-                                                    <td>{purchaseDate.toLocaleDateString()}</td>
                                                     <td>{expiryDate.toLocaleDateString()}</td>
                                                     <td className={daysStyle}>{daysDifference} days</td>
                                                     <td>
