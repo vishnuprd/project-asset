@@ -11,8 +11,9 @@ export default function AdminLogin() {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false); 
   const navigate = useNavigate();
-  const { login } = useAuth(); 
+  const { login } = useAuth();
 
   const Inputform = [
     {
@@ -73,7 +74,7 @@ export default function AdminLogin() {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
 
-        login(token); 
+        login(token);
         toast.success("Login successful!");
 
         navigate("/dashboard");
@@ -104,15 +105,28 @@ export default function AdminLogin() {
                   <label htmlFor={input.name} className="label">
                     <span className="label-text">{input.label}</span>
                   </label>
-                  <input
-                    id={input.name}
-                    name={input.name}
-                    type={input.type}
-                    placeholder={input.placeholder}
-                    value={formData[input.name]}
-                    onChange={handleChange}
-                    className="input input-bordered w-full"
-                  />
+                  <div className="relative">
+                    <input
+                      id={input.name}
+                      name={input.name}
+                      type={
+                        input.name === "password" && showPassword ? "text" : input.type
+                      }
+                      placeholder={input.placeholder}
+                      value={formData[input.name]}
+                      onChange={handleChange}
+                      className="input input-bordered w-full"
+                    />
+                    {input.name === "password" && (
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        className="absolute right-3 top-3 text-sm text-gray-500 focus:outline-none"
+                      >
+                        {showPassword ? "Hide" : "Show"}
+                      </button>
+                    )}
+                  </div>
                   {errors[input.name] && (
                     <span className="text-red-500 text-sm">{errors[input.name]}</span>
                   )}
@@ -120,16 +134,16 @@ export default function AdminLogin() {
               ))}
             </div>
             <div className="flex justify-center">
-  <button
-    type="submit"
-    className="custom-btn w-full sm:w-auto"
-  >
-    Get Started
-  </button>
-</div>
+              <button
+                type="submit"
+                className="custom-btn w-full sm:w-auto"
+              >
+                Get Started
+              </button>
+            </div>
           </form>
 
-          {/* Signup Link */}
+       
           <div className="mt-4">
             <span className="text-sm">
               Don't have an account?{" "}
