@@ -1,23 +1,30 @@
 import React, { useState } from "react";
+import Signup from "../../assets/signup.jpg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Login from "../../assets/login.jpg";
-import { useAuth } from "../../components/layout/authcontext.js";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
-export default function AdminLogin() {
+export default function AdminSignup() {
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false); 
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const Inputform = [
     {
       id: 1,
+      name: "name",
+      type: "text",
+      placeholder: "Your Name",
+      label: "Name",
+      required: true,
+    },
+    {
+      id: 2,
       name: "email",
       type: "email",
       placeholder: "Email",
@@ -25,7 +32,7 @@ export default function AdminLogin() {
       required: true,
     },
     {
-      id: 2,
+      id: 3,
       name: "password",
       type: "password",
       placeholder: "Password",
@@ -36,6 +43,9 @@ export default function AdminLogin() {
 
   const formValidation = (values) => {
     const errors = {};
+    if (!values.name || values.name.length <= 6) {
+      errors.name = "Enter a valid name, must be more than 6 characters.";
+    }
     if (!values.email || !/\S+@\S+\.\S+/.test(values.email)) {
       errors.email = "Enter a valid email address.";
     }
@@ -47,10 +57,7 @@ export default function AdminLogin() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -65,26 +72,19 @@ export default function AdminLogin() {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/admin/login`,
+        `${process.env.REACT_APP_API_URL}/api/admin/signup`,
         formData
       );
 
-      if (response.status === 200) {
-        const { token, user } = response.data;
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-
-        login(token);
-        toast.success("Login successful!");
-
-        navigate("/dashboard");
+      if (response.status === 201) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+        toast.success("Signup successful! 😍");
+        setTimeout(() => navigate("/"), 2000);
       } else {
-        toast.error(`Login Error: ${response.data.message}`);
+        toast.error(`Signup Error: ${response.data.message} 😒`);
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || error.message || "Something went wrong!";
-      toast.error(`Login Error: ${errorMessage}`);
+      toast.error(`Signup Error: ${error.message} 😒`);
     }
   };
 
@@ -92,12 +92,12 @@ export default function AdminLogin() {
     <div className="hero min-h-screen">
       <div className="hero-content flex-col lg:flex-row md:flex-row sm:flex-col items-center">
         <img
-          src={Login}
-          className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg "
-          alt="Login"
+          src={Signup}
+          className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg"
+          alt="Signup"
         />
         <div className="w-full md:w-1/2 sm:w-full p-4">
-          <h1 className="">Admin Login...!</h1>
+          <h1 className="">Admin Signup..!</h1>
           <form onSubmit={handleSubmit}>
             <div className="form-control">
               {Inputform.map((input) => (
@@ -141,20 +141,15 @@ export default function AdminLogin() {
                 Get Started
               </button>
             </div>
+            <div className="mt-4">
+              <span className="text-sm">
+                Already have an account?{" "}
+                <a href="/" className="text-blue-500 hover:underline">
+                  Click here to get started!
+                </a>
+              </span>
+            </div>
           </form>
-
-       
-          <div className="mt-4">
-            <span className="text-sm">
-              Don't have an account?{" "}
-              <a
-                href="/signup"
-                className="text-blue-500 hover:underline"
-              >
-                Signup here to get kicked started!
-              </a>
-            </span>
-          </div>
         </div>
       </div>
     </div>
