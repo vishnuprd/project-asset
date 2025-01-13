@@ -74,6 +74,16 @@ export default function EmployeeReport() {
     doc.save(`${employee.employeeId}_Report.pdf`);
   };
 
+  const formatDate = (date) => {
+    if (!date) return "N/A";
+    const formattedDate = new Date(date);
+    return formattedDate.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   const downloadExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(
       filteredData.map((employee) => ({
@@ -90,23 +100,12 @@ export default function EmployeeReport() {
       }))
     );
 
-    const formatDate = (date) => {
-        if (!date) return "N/A"; 
-        const formattedDate = new Date(date);
-        return formattedDate.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-      };
-
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Employee Data");
     const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
     saveAs(new Blob([excelBuffer], { type: "application/octet-stream" }), "Employee-Data.xlsx");
   };
 
- 
   const uniqueDivisions = [...new Set(employeeData.map((employee) => employee.division))];
   const uniqueLocations = [...new Set(employeeData.map((employee) => employee.location))];
   const uniqueNames = [...new Set(employeeData.map((employee) => employee.employeeName))];
@@ -119,7 +118,7 @@ export default function EmployeeReport() {
       <div className="p-4 sm:ml-64">
         <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
           <div className="p-4">
-            <div className="flex justify-between items-center mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
               <select
                 value={searchFilters.name}
                 onChange={(e) => setSearchFilters({ ...searchFilters, name: e.target.value })}
@@ -164,7 +163,7 @@ export default function EmployeeReport() {
               </select>
               <button
                 onClick={downloadExcel}
-                className="px-4 py-2 bg-[#FF735C] text-white rounded hover:bg-[#e06450]"
+                className="px-4 py-2 bg-[#FF735C] text-white rounded hover:bg-[#e06450] w-full max-w-xs"
               >
                 Download Excel
               </button>
