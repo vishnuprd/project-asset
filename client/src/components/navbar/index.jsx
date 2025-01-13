@@ -51,7 +51,7 @@ export default function Navbar() {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
               >
                 <li>
-                  <a onClick={handleLogout}>Logout</a>
+                  <a onClick={handleLogout} style={{ color: "#FF735C" }}>Logout</a>
                 </li>
               </ul>
             )}
