@@ -28,17 +28,17 @@ export default function AddDesktop() {
       options: [
         "Lamination", "Processing", "Garments", "Coating", "Bags",
         "EBO-Coimbatore", "EBO-Chennai", "Abirami-Eco-Plast",
-        "Non-Oven(Garments-2)", "Head-office", "Spinning",
-        "Fine-Garments(Garments-3)", "Fire-bird", "Vedhanayagam Hospital",
+        "Non-Woven(Garments-2)", "Head-office", "Spinning",
+        "Fine-Garments(Garments-3)", "Firebird College", "Vedhanayagam Hospital",
         "LeNatural", "Govt.School Project", "Others",
       ],
       required: true,
     },
     { id: 14, name: "adminAccount", label: "Admin Account", options: ["Yes", "No"], required: true },
     { id: 15, name: "version", label: "Version", options: ["Windows-XP", "Vista", "7-32 bit", "7-64 bit", "8", "8.1", "10", "10 Pro", "10 Edu", "11", "12", "13"], required: true },
-    { id: 16, name: "windowSoftware", label: "Window Software Installed", options: ["Yes", "No"], required: true },
+    { id: 16, name: "windowSoftware", label: "Window License", options: ["Yes", "No"], required: true },
     { id: 17, name: "antivirus", label: "Antivirus", options: ["Installed", "Not Installed"], required: true },
-    { id: 18, name: "msOffice", label: "Ms-Office", options: ["Yes", "No"], required: true },
+    { id: 18, name: "msOffice", label: "Ms-Office license", options: ["Yes", "No"], required: true },
   ];
 
   const fetchData = async () => {

@@ -10,7 +10,7 @@ export default function CCTVReport() {
   const [cctvData, setCctvData] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize] = useState(6);
-  const [searchFilters, setSearchFilters] = useState({ location: "", division: "" });
+  const [searchFilters, setSearchFilters] = useState({ location: "", division: "",storageType:"",});
 
   const fetchCctvDetails = async () => {
     try {
@@ -32,10 +32,11 @@ export default function CCTVReport() {
   }, []);
 
   const filteredCctvData = cctvData.filter((cctv) => {
-    const { location = "", division = "" } = searchFilters;
+    const { location = "", division = "", storageType = "", } = searchFilters;
     return (
       (!location || cctv.location?.toLowerCase().includes(location.toLowerCase().trim())) &&
-      (!division || cctv.division?.toLowerCase().includes(division.toLowerCase().trim()))
+      (!division || cctv.division?.toLowerCase().includes(division.toLowerCase().trim())) &&
+      (!storageType || cctv.storageType?.toLowerCase().includes(storageType.toLowerCase().trim()))
     );
   });
 
@@ -56,9 +57,13 @@ export default function CCTVReport() {
       ["Asset ID", cctv.serialNumber || "N/A"],
       ["Location", cctv.location || "N/A"],
       ["Division", cctv.division || "N/A"],
+      ["Storage Type", cctv.storageType || "N/A"],
+      ["Storage Size", cctv.storageSize || "N/A"],
+      ["Storage Date", cctv.storageDate || "N/A"],
       ["Status", cctv.status || "N/A"],
       ["Description", cctv.description || "N/A"],
       ["IP Address", cctv.ipAddress || "N/A"],
+
     ];
 
     doc.autoTable({
@@ -78,6 +83,9 @@ export default function CCTVReport() {
         "Asset ID": cctv.serialNumber || "N/A",
         Location: cctv.location || "N/A",
         Division: cctv.division || "N/A",
+        "Storage Type": cctv.storageType || "N/A",
+        "Storage Size": cctv.storageSize || "N/A",
+        "Storage Date": cctv.storageDate || "N/A",
         Status: cctv.status || "N/A",
         Description: cctv.description || "N/A",
         "IP Address": cctv.ipAddress || "N/A",
@@ -128,14 +136,22 @@ export default function CCTVReport() {
                       </option>
                     ))}
                   </select>
-                </div>
-
-                <button
-                  onClick={downloadExcel}
-                  className="px-4 py-2 bg-[#FF735C] text-white rounded hover:bg-[#e06450]"
+              
+                   <select
+                  value={searchFilters.storageType}
+                  onChange={(e) =>
+                    setSearchFilters({ ...searchFilters, storageType: e.target.value })
+                  }
+                  className="input input-bordered input-info w-full max-w-xs"
                 >
-                  Download Excel
-                </button>
+                  <option value="">Select Storage Type</option>
+                  {[...new Set(cctvData.map((cctv) => cctv.storageType))].map((storageType) => (
+                    <option key={storageType} value={storageType}>
+                      {storageType}
+                    </option>
+                  ))}
+                </select>
+              </div>
               </div>
 
               <h4 className="text-center text-[#FF735C] font-bold text-2xl mb-4">

@@ -1,9 +1,13 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy,  } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { AuthProvider } from './components/layout/authcontext.js';
+import LandingPage from './components/landingpage/index.jsx';
+import {AuthProvider } from './components/layout/authcontext.js';
 import ProtectedRoute from './components/layout/protected-route.js';
+
+
+
 
 const AdminLogin = lazy(() => import('./components/adminlogin/index.jsx'));
 const AdminSignup = lazy(() => import('./components/adminsignup/index.jsx'));
@@ -50,17 +54,35 @@ const AddPhone = lazy(() => import('./components/addphone/index.jsx'));
 const PhoneDetails = lazy(() => import('./components/phonedetails/index.jsx'));
 const PhoneHistory = lazy(() => import('./components/phonehistory/index.jsx'));
 const PhoneReport = lazy(() => import('./components/phonereport/index.jsx'));
+const AddRouter = lazy(() => import('./components/addrouter/index.jsx'));
+const RouterDetails = lazy(() => import('./components/routerdetails/index.jsx'));
+const RouterHistory = lazy(() => import('./components/routerhistory/index.jsx'));
+const RouterReport = lazy(() => import('./components/routerreport/index.jsx'));
+const AddSim = lazy (()=> import ('./components/addsim/index.jsx'));
+// const SimDetails =lazy(()=>import('./components/simdetails/index.jsx'));
+const SimHistory =lazy (()=>import('./components/simhistory/index.jsx'));
+const SimCardDetails =lazy(()=>import('./components/simdetails/index.jsx'));
+const SimReport =lazy (()=>import('./components/simreport/index.jsx'));
+const Unauthorized = lazy(() => import('./components/unauthorized/index.jsx'));
 const NotFound = lazy(() => import('./components/notfound/index.jsx'));
 
 function App() {
+  
+
+  // Check if the current route is allowed
+  
   return (
     <Router>
-      <AuthProvider>
+     <AuthProvider>
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
-            <Route path="/" element={<AdminLogin />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<AdminLogin />} />
             <Route path="/signup" element={<AdminSignup />} />
-            <Route element={<ProtectedRoute />}>
+            <Route path="/unauthorized" element={<Unauthorized />} />
+    
+            <Route element={<ProtectedRoute allowedRoles={["admin"]}  />}>
+              <Route path="/admin/dashboard" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/add-employee" element={<AddEmployee />} />
               <Route path="/employee-details" element={<EmployeeDetails />} />
@@ -88,29 +110,70 @@ function App() {
               <Route path="/printer-details" element={<PrinterDetails />} />
               <Route path="/printer-history" element={<PrinterHistory />} />
               <Route path="/printer-report" element={<PrinterReport />} />
+              <Route path="/add-router" element={<AddRouter />} />
               <Route path="/add-dongle" element={<AddDongle />} />
               <Route path="/dongle-details" element={<DongleDetails />} />
               <Route path="/dongle-history" element={<DongleHistory />} />
               <Route path="/dongle-report" element={<DongleReport />} />
-              <Route path="/add-projector" element={<AddProjector />} />
-              <Route path="/projector-details" element={<ProjectorDetails />} />
-              <Route path="/projector-history" element={<ProjectorHistory />} />
-              <Route path="/projector-report" element={<ProjectorReport />} />
-              <Route path="/add-tablet" element={<AddTablet />} />
-              <Route path="/tablet-details" element={<TabletDetails />} />
-              <Route path="/tablet-history" element={<TabletHistory />} />
-              <Route path="/tablet-report" element={<TabletReport />} />
+              <Route path="/Add-projector" element={<AddProjector/>}/>
+              <Route path="/projector-details" element={<ProjectorDetails/>}/>
+              <Route path="/projector-history" element={<ProjectorHistory/>}/>
+              <Route path="/projector-report" element={<ProjectorReport/>}/>
+              <Route path="/add-tablet" element={<AddTablet/>}/>
+              <Route path="/tablet-details" element={<TabletDetails/>}/>
+              <Route path="/tablet-history" element={<TabletHistory/>}/>
+              <Route path ="/tablet-report" element={<TabletReport/>}/>
+              <Route path="/add-phone" element={<AddPhone />} />
+              <Route path="/phone-details" element={<PhoneDetails />} />
+              <Route path="/phone-history" element={<PhoneHistory />} />
+              <Route path="/phone-report" element={<PhoneReport />} />
+              <Route path="/add-router" element={<AddRouter />} />
+              <Route path="/router-details" element={<RouterDetails />} />
+               <Route path="/router-history" element={<RouterHistory />} />
+              <Route path="/router-report" element={<RouterReport />} /> 
+              <Route path="/add-sim-card" element={<AddSim/>}/>
+              <Route path="/sim-card-details" element={<SimCardDetails />}/>
+              <Route path="/sim-card-history" element={<SimHistory/>}/>
+              <Route path="/sim-card-report" element={<SimReport/>}/>
+            </Route>
+
+            {/* HR-Specific Routes */}
+            <Route element={<ProtectedRoute allowedRoles={["hr"]}  />}>
+              <Route path="/hr/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/add-employee" element={<AddEmployee />} />
+              <Route path="/employee-details" element={<EmployeeDetails />} />
+              <Route path="/employee-report" element={<EmployeeReport />} />
+              <Route path="/add-dongle" element={<AddDongle />} />
+              <Route path="/dongle-details" element={<DongleDetails />} />
+              <Route path="/dongle-history" element={<DongleHistory />} />
+              <Route path="/dongle-report" element={<DongleReport />} />
               <Route path="/add-phone" element={<AddPhone />} />
               <Route path="/phone-details" element={<PhoneDetails />} />
               <Route path="/phone-history" element={<PhoneHistory />} />
               <Route path="/phone-report" element={<PhoneReport />} />
             </Route>
 
+            {/* User-Specific Routes */}
+            <Route element={<ProtectedRoute allowedRoles={["other"]}  />}>
+              <Route path="/other/dashboard" element={<Dashboard />} />
+              <Route path="/laptop-details" element={<LaptopDetails />} />
+              <Route path="/desktop-details" element={<DesktopDetails />} />
+              <Route path="/cctv-details" element={<CCTVDetails />} />
+              <Route path="/printer-details" element={<PrinterDetails />} />
+              <Route path="/dongle-details" element={<DongleDetails />} />
+              <Route path="/phone-details" element={<PhoneDetails />} />
+              <Route path="/router-history" element={<RouterHistory />} />
+            </Route>
+
+            {/* Not Found Route */}
+           
             <Route path="*" element={<NotFound />} />
+           
           </Routes>
         </Suspense>
         <ToastContainer position="bottom-right" autoClose={2000} />
-      </AuthProvider>
+     </AuthProvider>
     </Router>
   );
 }

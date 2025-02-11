@@ -14,6 +14,10 @@ const PrinterRoutes = require('./routes/printer.route.js');
 const ProjectorRoutes = require('./routes/projector.route.js');
 const TabletRoutes = require('./routes/tablet.route.js');
 const PhoneRoutes = require('./routes/phone.route.js');
+const RouterRoutes = require('./routes/routers.route.js');
+const SimRoutes = require('./routes/sim.route.js');
+
+
 
 dotenv.config();
 
@@ -30,6 +34,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+// app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+
 
 // Basic Route for testing
 app.get('/', (req, res) => {
@@ -64,6 +70,8 @@ app.use('/api/asset', PrinterRoutes);
 app.use('/api/asset', ProjectorRoutes);
 app.use('/api/asset', TabletRoutes);
 app.use('/api/asset', PhoneRoutes);
+app.use('/api/asset', RouterRoutes);
+app.use('/api/asset',SimRoutes);
 
 
 app.use((req, res, next) => {

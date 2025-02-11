@@ -5,13 +5,9 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function AdminSignup() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ name: "", email: "", password: "", role: "admin" });
   const [errors, setErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const Inputform = [
@@ -34,7 +30,7 @@ export default function AdminSignup() {
     {
       id: 3,
       name: "password",
-      type: "password",
+      type: showPassword ? "text" : "password",
       placeholder: "Password",
       label: "Password",
       required: true,
@@ -69,22 +65,23 @@ export default function AdminSignup() {
     if (Object.keys(validationErrors).length > 0) {
       return;
     }
-
+  
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/admin/signup`,
         formData
       );
+      console.log('Sign up Form Data:', formData);
 
       if (response.status === 201) {
         localStorage.setItem("user", JSON.stringify(response.data));
         toast.success("Signup successful! 😍");
         setTimeout(() => navigate("/"), 2000);
       } else {
-        toast.error(`Signup Error: ${response.data.message} 😒`);
+        toast.error(`Signup Error: ${response.data.message || "Please try again."} 😒`);
       }
     } catch (error) {
-      toast.error(`Signup Error: ${error.message} 😒`);
+      toast.error(`Signup Error: ${error.response?.data?.message || error.message || "Something went wrong! 😒"}`);
     }
   };
 
@@ -97,11 +94,11 @@ export default function AdminSignup() {
           alt="Signup"
         />
         <div className="w-full md:w-1/2 sm:w-full p-4">
-          <h1 className="">Admin Signup..!</h1>
+          <h1>Admin Signup..!</h1>
           <form onSubmit={handleSubmit}>
             <div className="form-control">
               {Inputform.map((input) => (
-                <div key={input.id} className="mb-4">
+                <div key={input.id} className="mb-4 relative">
                   <label htmlFor={input.name} className="label">
                     <span className="label-text">{input.label}</span>
                   </label>
@@ -109,13 +106,11 @@ export default function AdminSignup() {
                     <input
                       id={input.name}
                       name={input.name}
-                      type={
-                        input.name === "password" && showPassword ? "text" : input.type
-                      }
+                      type={input.name === "password" ? (showPassword ? "text" : "password") : input.type}
                       placeholder={input.placeholder}
                       value={formData[input.name]}
                       onChange={handleChange}
-                      className="input input-bordered w-full"
+                      className="input input-bordered w-full pr-10"
                     />
                     {input.name === "password" && (
                       <button
@@ -132,18 +127,33 @@ export default function AdminSignup() {
                   )}
                 </div>
               ))}
+              <div className="mb-4">
+                <label htmlFor="role" className="label">
+                  <span className="label-text">Role</span>
+                </label>
+                <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  className="input input-bordered w-full"
+                >
+                  <option value="admin">Admin</option>
+                  <option value="hr">HR</option>
+                  <option value="other">User</option>
+                </select>
+                {errors.role && (
+                  <span className="text-red-500 text-sm">{errors.role}</span>
+                )}
+              </div>
             </div>
             <div className="flex justify-center">
-              <button
-                type="submit"
-                className="custom-btn w-full sm:w-auto"
-              >
+              <button type="submit" className="custom-btn w-full sm:w-auto">
                 Get Started
               </button>
             </div>
             <div className="mt-4">
               <span className="text-sm">
-                Already have an account?{" "}
+                Already have an account? {" "}
                 <a href="/" className="text-blue-500 hover:underline">
                   Click here to get started!
                 </a>
@@ -152,6 +162,7 @@ export default function AdminSignup() {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

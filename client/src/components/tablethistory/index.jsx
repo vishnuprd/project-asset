@@ -178,7 +178,7 @@ export default function TabletHistory() {
                 </h4>
                 <form onSubmit={handleUpdate}>
                   <div className="grid grid-cols-2 gap-4">
-                    {/* Tablet ID (Read-only) */}
+             
                     <div className="form-control">
                       <label className="label">
                         <span className="label-text">Tablet ID</span>
@@ -192,7 +192,6 @@ export default function TabletHistory() {
                       />
                     </div>
 
-                    {/* Handled By */}
                     <div className="form-control">
                       <label className="label">
                         <span className="label-text">Handled By</span>
@@ -213,7 +212,6 @@ export default function TabletHistory() {
                       </select>
                     </div>
 
-                    {/* Model */}
                     <div className="form-control">
                       <label className="label">
                         <span className="label-text">Model</span>

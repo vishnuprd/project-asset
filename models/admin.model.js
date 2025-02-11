@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
 const AdminSchema = new Schema({
     email: {
         type: String,
@@ -10,7 +11,17 @@ const AdminSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
-}, { timestamps: true });
+    },
+    role: {
+        type: String,
+        required: true,
+        enum: ['admin', 'hr', 'other'], 
+    },
+  
+    },
+     { timestamps: true });
+
+
+
 
 module.exports = mongoose.model('Admin', AdminSchema);

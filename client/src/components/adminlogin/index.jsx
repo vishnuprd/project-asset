@@ -4,17 +4,39 @@ import axios from "axios";
 import Login from "../../assets/login.jpg";
 import { useAuth } from "../../components/layout/authcontext.js";
 import { ToastContainer, toast } from 'react-toastify';
+import { useLocation } from "react-router-dom";
 
 export default function AdminLogin() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false); 
   const navigate = useNavigate();
   const { login } = useAuth();
 
+
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const role = queryParams.get("role");
+
+  const getHeading = () => {
+    switch (role) {
+      case "admin":
+        return "Admin Login...!";
+      case "hr":
+        return "HR Login...!";
+      default:
+        return "User Login...!";
+    }
+  };
+
+
+
+  
   const Inputform = [
     {
       id: 1,
@@ -45,6 +67,9 @@ export default function AdminLogin() {
     return errors;
   };
 
+
+  const [UserRole, setUserRole] = useState(null);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -53,40 +78,49 @@ export default function AdminLogin() {
     });
   };
 
+
+
+ 
+
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const validationErrors = formValidation(formData);
-    setErrors(validationErrors);
-
     if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
-
+  
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/admin/login`,
-        formData
+        formData,
+     
       );
-
-      if (response.status === 200) {
-        const { token, user } = response.data;
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-
-        login(token);
+  
+      if (response.data.user) {
+        setUserRole(response.data.user);
         toast.success("Login successful!");
-
-        navigate("/dashboard");
-      } else {
-        toast.error(`Login Error: ${response.data.message}`);
+  
+        // Store token in localStorage or sessionStorage
+        localStorage.setItem("authToken", response.data.token);
+        localStorage.setItem("userRole", response.data.user.role);
+  
+        login(response.data.token, response.data.user);
+        navigate(`/${response.data.user.role}/dashboard`);
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || error.message || "Something went wrong!";
-      toast.error(`Login Error: ${errorMessage}`);
+      console.error("Login error:", error);
+      toast.error("Invalid email or password.");
     }
   };
+  
+  
+  
+  
+  
 
   return (
     <div className="hero min-h-screen">
@@ -97,7 +131,8 @@ export default function AdminLogin() {
           alt="Login"
         />
         <div className="w-full md:w-1/2 sm:w-full p-4">
-          <h1 className="">Admin Login...!</h1>
+        <h1>{getHeading()}</h1>
+
           <form onSubmit={handleSubmit}>
             <div className="form-control">
               {Inputform.map((input) => (
@@ -116,6 +151,7 @@ export default function AdminLogin() {
                       value={formData[input.name]}
                       onChange={handleChange}
                       className="input input-bordered w-full"
+                      autoComplete="current-password"
                     />
                     {input.name === "password" && (
                       <button

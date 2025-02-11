@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
 
 const cctvSchema = new Schema({
@@ -28,6 +27,15 @@ const cctvSchema = new Schema({
     },
     description: {
         type: String,  
+    },
+    storageType:{
+        type: String,
+    },
+    storageSize: {
+        type: String,
+    },
+    storageDate: {
+        type:String,
     },
     ipAddress: {
         type: String,

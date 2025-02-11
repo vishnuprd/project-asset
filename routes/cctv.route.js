@@ -4,7 +4,7 @@ const cctvController = require('../controllers/cctv.controllers.js');
 
 router.get('/cctv/all', cctvController.getAllCCTVs);
 router.post('/add', cctvController.addCCTV);
-router.put('/update/:id', cctvController.updateCCTV);
+router.put('/cctv/update/:id', cctvController.updateCCTV);
 router.delete('/delete/:id', cctvController.deleteCCTV);
 
 module.exports = router;

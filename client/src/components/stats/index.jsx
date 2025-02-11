@@ -13,6 +13,8 @@ export default function Stats() {
   const [tabletCount, setTabletCount] = useState(0); 
   const [phoneCount, setPhoneCount] = useState(0); 
   const [dongleCount, setDongleCount] = useState(0);  
+  const [routerCount, setRouterCount] = useState(0);
+  const [simCount, setSimCount] = useState(0);
 
   const fetchEmployeeData = async () => {
     try {
@@ -160,6 +162,37 @@ export default function Stats() {
   };
 
 
+  const fetchRouterData = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/asset/router/all`);
+      if (response.status === 200 && Array.isArray(response.data)) {
+        setRouterCount(response.data.length);
+      } else {
+        setRouterCount(0);
+      }
+    } catch (error) {
+      console.error("Error fetching router data:", error);
+      setRouterCount(0);
+    }
+  };
+
+
+
+  const fetchSimData = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/asset/sim-card/all`);
+      if (response.status === 200 && Array.isArray(response.data.data)) {
+        setSimCount(response.data.data.length);
+      } else {
+        setSimCount(0);
+      }
+    } catch (error) {
+      console.error("Error fetching SIM data:", error.message || error.response?.data);
+      setSimCount(0);
+    }
+  };
+
+
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -175,6 +208,8 @@ export default function Stats() {
         fetchTabletData(),
         fetchPhoneData(),
         fetchDongleData(),
+        fetchRouterData(),
+        fetchSimData()
       ]);
     };
     fetchAllData();
@@ -194,7 +229,7 @@ export default function Stats() {
 <Card title="Employees" count={employeeCount} iconClass="bi-person-circle" bgColor="blue" />
 <Card title="Laptops" count={laptopCount} iconClass="bi-laptop" bgColor="green" />
 <Card title="Desktops" count={desktopCount} iconClass="bi-desktop" bgColor="yellow" />
-<Card title="Scrap Items" count={scrapCount} iconClass="bi-trash" bgColor="red" />
+{/* <Card title="Scrap Items" count={scrapCount} iconClass="bi-trash" bgColor="red" /> */}
 <Card title="Domain" count={domainCount} iconClass="bi-diagram-3" bgColor="purple" />
 <Card title="CCTV" count={cctvCount} iconClass="bi-camera-video" bgColor="orange" />
 <Card title="Printer" count={printerCount} iconClass="bi-printer" bgColor="pink" />
@@ -202,7 +237,8 @@ export default function Stats() {
 <Card title="Tablet" count={tabletCount} iconClass="bi-tablet" bgColor="cyan" />
 <Card title="Phone" count={phoneCount} iconClass="bi-phone" bgColor="gray" />
 <Card title="Dongle" count={dongleCount} iconClass="bi-wifi" bgColor="lightyellow" />
-
+<Card title="Router" count={routerCount} iconClass="bi-wifi" bgColor="pink" />
+<Card title="SIM Card" count={simCount} iconClass="bi-phone" bgColor="cyan" />
 
         </div>
       </div>

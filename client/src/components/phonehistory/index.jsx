@@ -66,6 +66,7 @@ export default function PhoneHistory() {
     e.preventDefault();
     try {
       const phoneId = modalRef.current._id;
+      
       const response = await axios.put(
         `${process.env.REACT_APP_API_URL}/api/asset/phone/${phoneId}`,
         currentPhone

@@ -1,4 +1,4 @@
-import React, { useState, useEffect,  } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../layout/layout.js';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,10 +8,8 @@ export default function CctvHistory() {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentCctv, setCurrentCctv] = useState({});
   const [page, setPage] = useState(1);
-   const [pageSize] = useState(5);
-   const [searchFilters, setSearchFilters] = useState({ location: "", division: "" });
-
-
+  const [pageSize] = useState(5);
+  const [searchFilters, setSearchFilters] = useState({ location: "", division: "" });
 
   const handleOpenModal = (cctv) => {
     setCurrentCctv(cctv);
@@ -38,15 +36,11 @@ export default function CctvHistory() {
         setCctvData(response.data.data);
       } else {
         console.error(`Error fetching CCTV details: ${response.data.message}`);
-        if (alert && typeof alert.error === 'function') {
-          alert.error(`Error fetching CCTV details: ${response.data.message}`);
-        }
+        toast.error(`Error fetching CCTV details: ${response.data.message}`);
       }
     } catch (error) {
       console.error(`Error fetching CCTV details: ${error.message}`);
-      if (alert && typeof alert.error === 'function') {
-        alert.error(`Error fetching CCTV details: ${error.message}`);
-      }
+      toast.error(`Error fetching CCTV details: ${error.message}`);
     }
   };
 
@@ -55,19 +49,28 @@ export default function CctvHistory() {
   }, []);
 
   const handleUpdate = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
+
+    if (!currentCctv._id) {
+      toast.error("CCTV ID is missing. Cannot update.");
+      return;
+    }
+
+    const updateUrl = `${process.env.REACT_APP_API_URL}/api/asset/cctv/update/${currentCctv._id}`;
+    console.log("Updating CCTV at URL:", updateUrl);
+
     try {
-      const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/asset/update/${currentCctv._id}`, currentCctv);
+      const response = await axios.put(updateUrl, currentCctv);
+
       if (response.status === 200) {
         toast.success('CCTV details updated successfully!');
         fetchCctvDetails();
         handleCloseModal();
       } else {
-        console.error(`Error updating CCTV details: ${response.data.message}`);
         toast.error(`Error updating CCTV details: ${response.data.message}`);
       }
     } catch (error) {
-      console.error(`Error updating CCTV details: ${error.message}`);
+      console.error("Update Error:", error.response?.data || error.message);
       toast.error(`Error updating CCTV details: ${error.message}`);
     }
   };
@@ -88,7 +91,6 @@ export default function CctvHistory() {
   const handlePreviousPage = () => setPage((prev) => Math.max(prev - 1, 1));
   const handleNextPage = () => setPage((prev) => Math.min(prev + 1, totalPages));
 
-
   return (
     <div>
       <Layout>
@@ -100,41 +102,37 @@ export default function CctvHistory() {
               </h3>
 
               <div className="flex justify-end gap-4 mb-4">
+                <select
+                  name="division"
+                  className="input input-bordered input-info w-full max-w-xs"
+                  value={searchFilters.division || ''}
+                  onChange={(e) => setSearchFilters({ ...searchFilters, division: e.target.value })}
+                >
+                  <option value="">Select Division</option>
+                  {[...new Map(
+                    cctvData.map((option) => [option.division.toLowerCase(), option.division])
+                  ).values()].map((division, index) => (
+                    <option key={index} value={division}>
+                      {division}
+                    </option>
+                  ))}
+                </select>
 
-<select
-name="division"
-className="input input-bordered input-info w-full max-w-xs"
-value={searchFilters.division || ''}
-onChange={(e) => setSearchFilters({ ...searchFilters, division: e.target.value })}
->
-<option value="">Select Division</option>
-{[...new Map(
-cctvData.map((option) => [option.division.toLowerCase(), option.division])
-).values()].map((division, index) => (
-<option key={index} value={division}>
-{division}
-</option>
-))}
-</select>
+                <select
+                  name="location"
+                  className="input input-bordered input-info w-full max-w-xs"
+                  value={searchFilters.location || ''}
+                  onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value })}
+                >
+                  <option value="">Select Location</option>
+                  {[...new Set(cctvData.map((option) => option.location))].map((location, index) => (
+                    <option key={index} value={location}>
+                      {location}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-
-
-<select
-name="location"
-className="input input-bordered input-info w-full max-w-xs"
-value={searchFilters.location || ''}
-onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value })}
->
-<option value="">Select Location</option>
-{[...new Set(cctvData.map((option) => option.location))].map((location, index) => (
-<option key={index} value={location}>
-{location}
-</option>
-))}
-</select>
-</div>
-
-            
               <div className="overflow-x-auto">
                 <table className="table">
                   <thead>
@@ -151,9 +149,9 @@ onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value }
                   </thead>
                   <tbody>
                     {paginatedData.length > 0 ? (
-                        paginatedData.map((cctv, index) => (
+                      paginatedData.map((cctv, index) => (
                         <tr key={index}>
-                        <td>{index + 1 + (page - 1) * pageSize}</td>
+                          <td>{index + 1 + (page - 1) * pageSize}</td>
                           <td>{cctv.cctvId}</td>
                           <td>{cctv.model}</td>
                           <td>{cctv.serialNumber}</td>
@@ -162,7 +160,7 @@ onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value }
                           <td>{cctv.division}</td>
                           <td>
                             <button className="btn btn-sm btn-grey" onClick={() => handleOpenModal(cctv)}>
-                             Edit
+                              Edit
                             </button>
                           </td>
                         </tr>
@@ -179,26 +177,24 @@ onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value }
               </div>
 
               <div className="flex justify-between mt-4">
-                            <button onClick={handlePreviousPage} className="custom-btn" disabled={page === 1}>
-                                Previous
-                            </button>
-                            <span>
-                                Page {page} of {totalPages}
-                            </span>
-                            <button onClick={handleNextPage} className="custom-btn" disabled={page === totalPages}>
-                                Next
-                            </button>
-                        </div>
-                    </div>
+                <button onClick={handlePreviousPage} className="custom-btn" disabled={page === 1}>
+                  Previous
+                </button>
+                <span>
+                  Page {page} of {totalPages}
+                </span>
+                <button onClick={handleNextPage} className="custom-btn" disabled={page === totalPages}>
+                  Next
+                </button>
+              </div>
+            </div>
 
-              
-
-              {modalOpen && (
-                <dialog open={modalOpen} className="modal modal-bottom sm:modal-middle">
-                  <div className="modal-box w-11/12 max-w-5xl">
-                    <h4 className="text-center font-bold" style={{ color: "#FF735C" }}>
-                      CCTV Update
-                    </h4>
+            {modalOpen && (
+              <dialog open={modalOpen} className="modal modal-bottom sm:modal-middle">
+                <div className="modal-box w-11/12 max-w-5xl">
+                  <h4 className="text-center font-bold" style={{ color: "#FF735C" }}>
+                    CCTV Update
+                  </h4>
                     <form onSubmit={handleUpdate} className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                       <div className="col-span-2">
                         <label className="label">CCTV ID</label>
@@ -288,6 +284,44 @@ onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value }
   </select>
 </div>
 
+<div>
+  <label className="label">Storage Type</label>
+  <select
+    name="storageType"
+    className="input input-bordered w-full"
+    value={currentCctv.storageType || ''}
+    onChange={handleChange}
+  >
+    <option value="">Select Storage Type</option>
+    <option value="DVR">DVR</option>
+    <option value="NVR">NVR</option>
+    <option value="NAS">NAS</option>
+    <option value="cloud">Cloud</option>
+    <option value="other">Other</option>
+  </select>
+</div>
+
+                    <div>
+                        <label className="label">Storage Size</label>
+                        <input
+                          type="text"
+                          name="storageSize"
+                          className="input input-bordered w-full"
+                          value={currentCctv.storageSize || ''}
+                          onChange={handleChange}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="label">Number of Days Data stored </label>
+                        <input
+                          type="text"
+                          name="storageDate"
+                          className="input input-bordered w-full"
+                          value={currentCctv.storageDate || ''}
+                          onChange={handleChange}
+                        />
+                      </div>
 
                       <div>
                         <label className="label">Description</label>

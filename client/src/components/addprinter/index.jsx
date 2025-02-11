@@ -92,22 +92,11 @@ export default function AddPrinter() {
         required: true,
         type: "select",
         options: [
-            "Lamination",
-            "Processing",
-            "Garments",
-            "Coating",
-            "Bags",
-             "EBO",
-            "Abirami-Eco-Plast",
-            "Non-Oven(Garments-2)",
-            "Head-office",
-            "spinning",
-            "Fine-Garments(Garments-3)",
-            "Fire-bird",
-            "vedhanayagam hospital",
-            "lenatural",
-            "Govt.school project",
-            "others"
+          "Lamination", "Processing", "Garments", "Coating", "Bags",
+          "EBO-Coimbatore", "EBO-Chennai", "Abirami-Eco-Plast",
+          "Non-Woven(Garments-2)", "Head-office", "Spinning",
+          "Fine-Garments(Garments-3)", "Firebird College", "Vedhanayagam Hospital",
+          "LeNatural", "Govt.School Project", "Others",
         ]
       },
      

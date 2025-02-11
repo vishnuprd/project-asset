@@ -1,97 +1,104 @@
-
 const Admin = require("../models/admin.model.js");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.signupAdmin = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
     try {
-        // Check if an admin with the same email already exists
+       
         const existingAdmin = await Admin.findOne({ email });
         if (existingAdmin) {
             return res.status(400).json({ message: 'Admin already exists' });
         }
 
-        // Hash the password
+   
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create a new admin
+     
         const newAdmin = new Admin({
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            role
         });
 
-        // Save the new admin to the database
         await newAdmin.save();
 
-        // Respond with success message
         res.status(201).json({ message: 'Admin registered successfully' });
     } catch (error) {
-        // Log and respond with an error message
         console.error('Error during admin signup:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
 
-exports.loginAdmin = async (req, res) => {
-    const { email, password } = req.body;
 
+
+exports.login = async (req, res) => {
     try {
-        const admin = await Admin.findOne({ email });
-        if (!admin) {
-            return res.status(404).json({ message: 'Invalid login: No admin found with this email' });
+        const { email, password } = req.body;
+        const user = await Admin.findOne({ email });
+
+        if (!user) {
+            return res.status(400).json({ message: 'User not found' });
         }
 
-        const isPasswordValid = await bcrypt.compare(password, admin.password);
-        if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Invalid password' });
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: admin._id }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+        if (!process.env.TOKEN_SECRET) {
+            console.error('JWT_SECRET is not defined in environment variables');
+            return res.status(500).json({ message: 'JWT secret key missing in server' });
+        }
 
-        res.status(200).json({
-            token,
-            user: {
-                id: admin._id,
-                email: admin.email,
-            },
-        });
-    } catch (err) {
-        console.error('Error during admin login:', err);
-        res.status(500).json({ error: 'Internal server error' });
+        const token = jwt.sign(
+            { id: user._id, role: user.role },
+            process.env.TOKEN_SECRET,
+            { expiresIn: '10d' }
+          );
+          
+         
+
+        res.json({ token, user: { name: user.name, email: user.email, role: user.role } });
+
+    } catch (error) {
+        console.error('Login Error:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+
+
 
 exports.getAdmin = async (req, res) => {
     try {
         const user = req.user;
 
         if (!user || !user.id) {
-            return res.status(401).json({ msg: 'Unauthorized' });
+            return res.status(401).json({ message: 'Unauthorized' });
         }
 
         const dbUser = await Admin.findById(user.id);
 
         if (!dbUser) {
-            return res.status(404).json({ msg: 'User not found' });
+            return res.status(404).json({ message: 'User not found' });
         }
 
         const userWithoutPassword = { ...dbUser._doc };
         delete userWithoutPassword.password;
 
         res.status(200).json(userWithoutPassword);
-    } catch (err) {
-        console.error('Error fetching admin data:', err);
-        res.status(500).json({ error: 'Internal server error' });
+    } catch (error) {
+        console.error('Error fetching admin data:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
 
 exports.logoutAdmin = (req, res) => {
     try {
-        res.clearCookie('token'); 
-        res.status(200).json({ message: 'Logout successful' });
-    } catch (err) {
-        console.error('Error during admin logout:', err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(200).json({ message: 'Logout successful. Please remove the token from the frontend storage.' });
+    } catch (error) {
+        console.error('Error during admin logout:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };

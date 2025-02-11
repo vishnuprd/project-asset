@@ -69,23 +69,11 @@ export default function AddDongle() {
       label: "Division",
       type: "select",
       options: [
-        "Lamination",
-        "Processing",
-        "Garments",
-        "Coating",
-        "Bags",
-        "EBO-Coimbatore",
-        "EBO-Chennai",
-        "Abirami-Eco-Plast",
-        "Non-Oven(Garments-2)",
-        "Head-office",
-        "Spinning",
-        "Fine-Garments(Garments-3)",
-        "Fire-bird",
-        "Vedhanayagam Hospital",
-        "LeNatural",
-        "Govt. School Project",
-        "Others",
+        "Lamination", "Processing", "Garments", "Coating", "Bags",
+        "EBO-Coimbatore", "EBO-Chennai", "Abirami-Eco-Plast",
+        "Non-Woven(Garments-2)", "Head-office", "Spinning",
+        "Fine-Garments(Garments-3)", "Firebird College", "Vedhanayagam Hospital",
+        "LeNatural", "Govt.School Project", "Others",
       ],
     },
     {
@@ -200,7 +188,7 @@ export default function AddDongle() {
                 ))}
               </div>
               <div className="form-control flex-row mt-4 flex justify-center space-x-2">
-                <button type="submit" className="custom-btn">Save</button> {/* Ensure it's type="submit" */}
+                <button type="submit" className="custom-btn">Save</button> 
                 <button type="button" className="btn btn-grey">Cancel</button>
               </div>
             </form>

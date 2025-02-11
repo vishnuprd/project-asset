@@ -23,8 +23,8 @@ export default function Navbar() {
         navigate('/');
   
      
-        const message = response.data?.message || 'Logout successful!';
-        toast.success(message);
+        // const message = response.data?.message || 'Logout successful!';
+        toast.success("logout successfully");
       } else {
         toast.error('Unexpected response from the server.');
       }
@@ -43,7 +43,7 @@ export default function Navbar() {
       <div className="navbar bg-base-100">
         <div className="flex-1">
           <a className="btn btn-ghost text-xl ml-0 " style={{ color: "#FF735C" }}>
-            Asset Management
+           Asset Management 
           </a>
         </div>
         <div className="flex-none gap-2">

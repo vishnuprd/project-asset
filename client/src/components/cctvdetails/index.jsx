@@ -184,8 +184,12 @@ export default function CctvDetails() {
                       <p><strong>IP Address:</strong> {modalRef.current?.ipAddress || 'N/A'}</p>
                       <p><strong>Location:</strong> {modalRef.current?.location || 'N/A'}</p>
                       <p><strong>Division:</strong> {modalRef.current?.division || 'N/A'}</p>
+                      <p><strong>Storage Type:</strong>{modalRef.current?.storageType || 'N/A'}</p>
+                      <p><strong>Storage Size:</strong> {modalRef.current?.storageSize || 'N/A'}</p>
+                      <p><strong>Number of Days Data stored:</strong> {modalRef.current?.storageDate || 'N/A'}</p>
                       <p><strong>Status:</strong> {modalRef.current?.status || 'N/A'}</p>
                       <p><strong>Description:</strong> {modalRef.current?.description || 'N/A'}</p>
+
                     </div>
                     <div className="modal-action flex justify-center">
                       <button className="custom-btn" onClick={handleCloseModal}>Close</button>

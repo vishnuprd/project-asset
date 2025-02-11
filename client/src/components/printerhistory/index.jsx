@@ -61,7 +61,7 @@ export default function PrinterHistory() {
       );
 
       if (response.status === 200) {
-        console.log("Printer updated successfully:", response.data);
+        // console.log("Printer updated successfully:", response.data);
         toast.success("Printer updated successfully!");
         fetchprinterData();
         handleCloseModal();
@@ -168,7 +168,6 @@ export default function PrinterHistory() {
                     <th className="font-bold" style={{ color: "#FF735C" }}>#</th>
                     <th className="font-bold" style={{ color: "#FF735C" }}>Printer Id</th>
                     <th className="font-bold" style={{ color: "#FF735C" }}>Model</th>
-                    <th  className="font-bold" style={{ color: "#FF735C" }}>Serial Number</th>
                     <th  className="font-bold" style={{ color: "#FF735C" }}>Serial Number</th>
                     <th  className="font-bold" style={{ color: "#FF735C" }}>Location</th>
                     <th  className="font-bold" style={{ color: "#FF735C" }}>Division</th>

@@ -1,5 +1,5 @@
 const CCTV = require("../models/cctv.model.js");
-
+const mongoose = require('mongoose');  
 
 const getAllCCTVs = async (req, res) => {
     try {
@@ -20,7 +20,7 @@ const getAllCCTVs = async (req, res) => {
 
 const addCCTV = async (req, res) => {
     try {
-      const { cctvId, model, serialNumber, ipAddress, location, division, status, description } = req.body;
+      const { cctvId, model, serialNumber, ipAddress, location, division, status, description,storageType, storageSize,storageDate } = req.body;
   
      
       if (!model || !serialNumber || !location || !division || !ipAddress) {
@@ -37,6 +37,9 @@ const addCCTV = async (req, res) => {
         division,
         status: status || 'Active', 
         description,
+        storageType : storageType || 'N/A',
+        storageSize,
+        storageDate
       });
   
      
@@ -49,42 +52,34 @@ const addCCTV = async (req, res) => {
   };
 
 
-const updateCCTV = async (req, res) => {
+  const updateCCTV = async (req, res) => {
     try {
         const { id } = req.params;
+        console.log("Received PUT request for CCTV ID:", id);
+        console.log("Request Body:", req.body);
 
-        if (!id) {
-            return res.status(400).json({
-                success: false,
-                message: 'CCTV ID is required'
-            });
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid CCTV ID format" });
         }
 
         const updatedCCTV = await CCTV.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
 
         if (!updatedCCTV) {
-            return res.status(404).json({
-                success: false,
-                message: 'CCTV not found'
-            });
+            console.log("CCTV not found in database");
+            return res.status(404).json({ success: false, message: "CCTV not found" });
         }
 
-        res.status(200).json({
-            success: true,
-            message: 'CCTV updated successfully',
-            data: updatedCCTV
-        });
+        console.log("CCTV Updated Successfully:", updatedCCTV);
+        res.status(200).json({ success: true, message: "CCTV updated successfully", data: updatedCCTV });
     } catch (error) {
-        console.error('Error updating CCTV:', error);
-        res.status(400).json({
-            success: false,
-            message: 'Failed to update CCTV',
-            error: error.message
-        });
+        console.error("Error updating CCTV:", error);
+        res.status(500).json({ message: "Failed to update CCTV", error: error.message });
     }
 };
 
-// Delete a CCTV record
+
+
+
 const deleteCCTV = async (req, res) => {
     try {
         const { id } = req.params;

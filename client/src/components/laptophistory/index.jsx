@@ -33,23 +33,11 @@ export default function LaptopHistory() {
 
   const statusOptions = ["Assigned", "Lost", "Scrap", "Available"];
   const divisionOptions = [
-    "Lamination",
-    "Processing",
-    "Garments",
-    "Coating",
-    "Bags",
-    "EBO-Coimbatore",
-    "EBO-Chennai",
-    "Abirami-Eco-Plast",
-    "Non-Oven(Garments-2)",
-    "Head-office",
-    "Spinning",
-    "Fine-Garments(Garments-3)",
-    "Fire-bird",
-    "Vedhanayagam Hospital",
-    "Lenatural",
-    "Govt.school project",
-    "Others",
+    "Lamination", "Processing", "Garments", "Coating", "Bags",
+    "EBO-Coimbatore", "EBO-Chennai", "Abirami-Eco-Plast",
+    "Non-Woven(Garments-2)", "Head-office", "Spinning",
+    "Fine-Garments(Garments-3)", "Firebird College", "Vedhanayagam Hospital",
+    "LeNatural", "Govt.School Project", "Others",
   ];
 
   const handleOpenModal = (laptop) => {
